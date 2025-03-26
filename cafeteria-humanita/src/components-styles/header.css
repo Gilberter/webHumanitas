@@ -1,0 +1,49 @@
+/* Estilos generales */
+.header {
+    background-color: #333;
+    padding: 15px;
+  }
+  
+  /* Contenedor del nav */
+  .nav-container {
+    display: flex;
+    justify-content: space-between; /* Separa izquierda y derecha */
+    align-items: center;
+  }
+  
+  /* Estilos de listas */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  /* Estilos de elementos */
+  li {
+    margin: 0 15px;
+  }
+  
+  /* Estilos de los enlaces */
+  p {
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Icono más grande */
+  svg {
+    font-size: 22px;
+  }
+  
+  /* Alineación de izquierda y derecha */
+  .nav-left {
+    flex: 1;
+  }
+  
+  .nav-right {
+    display: flex;
+    gap: 20px;
+  }
