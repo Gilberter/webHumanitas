@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #77ff55; /* Azul (Tailwind bg-blue-600) */
+    background-color: #99cc33; /* Azul (Tailwind bg-blue-600) */
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra similar a shadow-md */
     z-index: 50;
