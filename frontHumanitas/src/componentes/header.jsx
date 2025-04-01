@@ -1,17 +1,26 @@
 import React from 'react';
-import './header.css';
-
-const Header = () => {
+import { FaRegUserCircle } from "react-icons/fa";
+import "./header.css"
+function Header() {
   return (
     <header className="header">
-      <div className="header-container">
-        <h3 className="nombreWeb">Web Humanitas</h3>
-        <button className="usuario">
-          Iniciar Sesión
-        </button>
-      </div>
+      <nav className="nav-container">
+        {/* Izquierda */}
+        <ul className="nav-left">
+          <li>
+            <p><FaRegUserCircle size={20} /> Iniciar Sesión</p>
+          </li>
+        </ul>
+
+        {/* Derecha */}
+        <ul className="nav-right">
+          <li><p>Registrarse</p></li>
+          <li><p>Contacto</p></li>
+        </ul>
+      </nav>
     </header>
   );
-};
+}
+
 
 export default Header;

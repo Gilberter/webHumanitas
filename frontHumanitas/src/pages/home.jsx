@@ -1,14 +1,41 @@
 import React from "react";
-import Header from '../componentes/header.jsx';
+import Header from "../componentes/header.jsx";
+import "./home.css";
+import imagen from "../assets/imagen-home.jpeg";
 
 const Home = () => {
   return (
     <>
-        <Header />
-        <div>
-            <h1>Inicio</h1>
-            <p>Esta es el login.</p>
+      <Header />
+      <main className="home">
+        <div className="top-div"> 
+          <h1>
+            <span className="green">Café</span> 
+            <span className="white">Humanitas</span>
+          </h1>
         </div>
+        
+        <div className="bottom-div">
+          <section className="info">
+            <p>
+              Descubre el sabor que despierta tus sentidos. Cafés seleccionados,
+              ambiente acogedor y momentos que quedan en tu memoria.
+            </p>
+          </section>
+
+          <section className="menu-options">
+            <div className="option">
+              <p>Ver Menú Semanal</p>
+            </div>
+            <div className="option">
+              <p>Ver Productos</p>
+            </div>
+            <div className="option">
+              <p>Ver Bebidas</p>
+            </div>
+          </section>
+        </div>
+      </main>
     </>
   );
 };
