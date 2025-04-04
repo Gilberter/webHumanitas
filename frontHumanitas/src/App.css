@@ -1,11 +1,13 @@
 #root {
-  max-width: 100%;
   text-align: center;
+  height: 100%;
 }
 
 body{
   margin: 0px;
   padding: 0px;
+  height: 100%;
+  
 }
 @keyframes logo-spin {
   from {
