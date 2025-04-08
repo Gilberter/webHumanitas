@@ -1,7 +1,9 @@
 import React from "react";
-import Header from "../componentes/header.jsx";
 import "./home.css";
 import imagen from "../assets/imagen-home.jpeg";
+
+import Header from "../componentes/header.jsx";
+import Footer from "../componentes/footer.jsx";
 
 const Home = () => {
   return (
@@ -36,6 +38,7 @@ const Home = () => {
           </section>
         </div>
       </main>
+      <Footer/>
     </>
   );
 };

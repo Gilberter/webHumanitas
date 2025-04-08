@@ -11,7 +11,7 @@ const Reservas = () => {
     <Header />
     <div className="container">
             <h1 className="text-center mt-4 mb-4">Menú semanal</h1>
-            <div class="row justify-content-center gx-0">
+            <div class="row justify-content-center gx-0 mb-4">
 
                 <div class="col-6 col-md-4 col-xl-3">
                     <div class="card">
