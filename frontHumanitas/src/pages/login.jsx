@@ -1,5 +1,4 @@
 import React from "react";
-import "./login.css";
 
 const Login = () => {
   return (
@@ -74,6 +73,17 @@ const Login = () => {
               </div>
 
               <div className="mb-3">
+                <label className="form-label">Codigo Estudiante</label>
+                <input
+                  type="codigo"
+                  className="form-control"
+                  id="codigo"
+                  placeholder="2211221"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
                 <label htmlFor="email" className="form-label">Correo</label>
                 <input
                   type="email"
@@ -98,13 +108,13 @@ const Login = () => {
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <div className="form-check">
                   <input className="form-check-input" type="checkbox" id="recibir_email" />
-                  <label className="form-check-label">
-                    Recibir notificaciones via email
+                  <label className="form-check-label" htmlFor="recibir_email">
+                    Recibir notificaciones vía email
                   </label>
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary w-100">Registrarse</button>
+              <button type="submit" className="btn btn-secundary w-100">Registrarse</button>
             </form>
 
           </div>
