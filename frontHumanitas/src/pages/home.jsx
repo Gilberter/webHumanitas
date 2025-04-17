@@ -1,8 +1,10 @@
 import React from "react";
-import Header from "../componentes/header.jsx";
 import "./home.css";
 import imagen from "../assets/imagen-home.jpeg";
 import { useState } from 'react'
+
+import Header from "../componentes/header.jsx";
+import Footer from "../componentes/footer.jsx";
 
 const Home = () => {
   const [showLogin, setShowLogin] = useState(false); 
@@ -50,6 +52,7 @@ const Home = () => {
           </div>
         )}
       </main>
+      <Footer/>
     </>
   );
 };

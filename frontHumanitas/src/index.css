@@ -25,3 +25,22 @@
     background-color: #f9f9f9;
   }
 }
+
+/* Archivo personalizado (custom.css) */
+.btn-primary {
+  background-color: #99cc33; /* Color de fondo */
+  border-color: #99cc33;    /* Color del borde */
+  --bs-btn-active-bg: #5a751f; /* Color de fondo al hacer clic */
+  --bs-btn-active-border-color: #5a751f; /* Color del borde al hacer clic */
+  --bs-btn-hover-bg: #78a027; /* Color al pasar el mouse */
+  --bs-btn-hover-border-color: #99cc33; /* Borde al pasar el mouse */  
+}
+
+.btn-secundary {
+  background-color: #ffffff; /* Color de fondo */
+  border-color: hsl(0, 0%, 100%);    /* Color del borde */
+  --bs-btn-active-bg: #c5d6a0; /* Color de fondo al hacer clic */
+  --bs-btn-active-border-color: #c2d39d; /* Color del borde al hacer clic */
+  --bs-btn-hover-bg: #e9ffbe; /* Color al pasar el mouse */
+  --bs-btn-hover-border-color: #ebffc3; /* Borde al pasar el mouse */  
+}
