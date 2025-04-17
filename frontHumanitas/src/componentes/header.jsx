@@ -1,14 +1,14 @@
 import React from 'react';
 import { FaRegUserCircle } from "react-icons/fa";
 import "./header.css"
-function Header() {
+function Header({ setShowLogin }) {
   return (
     <header className="header">
       <nav className="nav-container">
         {/* Izquierda */}
         <ul className="nav-left">
           <li>
-            <p><FaRegUserCircle size={20} /> Iniciar Sesión</p>
+            <p className="btn-login" onClick={() => setShowLogin(true)} ><FaRegUserCircle size={20} /> Iniciar Sesión</p>
           </li>
         </ul>
 

@@ -2,11 +2,14 @@ import React from "react";
 import Header from "../componentes/header.jsx";
 import "./home.css";
 import imagen from "../assets/imagen-home.jpeg";
+import { useState } from 'react'
 
 const Home = () => {
+  const [showLogin, setShowLogin] = useState(false); 
+
   return (
     <>
-      <Header />
+      <Header setShowLogin={setShowLogin}/>
       <main className="home">
         <div className="top-div"> 
           <h1>
@@ -35,6 +38,17 @@ const Home = () => {
             </div>
           </section>
         </div>
+        {showLogin && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Iniciar Sesión</h2>
+              <input type="text" placeholder="Usuario" />
+              <input type="password" placeholder="Contraseña" />
+              <button className="btn-login">Entrar</button>
+              <button className="btn-close" onClick={() => setShowLogin(false)}>Cerrar</button>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
