@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal } from "bootstrap"; // Necesitamos esto para manejar el modal
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import "./reservas.css";
 import Header from "../componentes/header.jsx";
 import Footer from "../componentes/footer.jsx";
