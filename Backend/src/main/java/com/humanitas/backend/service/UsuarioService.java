@@ -5,6 +5,7 @@ import com.humanitas.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,32 +14,33 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Crear un nuevo usuario
     public Usuario crearUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    // Obtener un usuario por su ID
-    public Optional<Usuario> obtenerUsuarioPorId(Integer id) {
+    public Optional<Usuario> obtenerUsuarioPorId(int id) {
         return usuarioRepository.findById(id);
     }
 
-    // Actualizar un usuario
-    public Usuario actualizarUsuario(Integer id, Usuario usuarioActualizado) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioActualizado.setId(id);
-            return usuarioRepository.save(usuarioActualizado);
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public Usuario actualizarUsuario(int id, Usuario usuarioActualizado) {
+        Optional<Usuario> usuarioExistente = usuarioRepository.findById(id);
+        if (usuarioExistente.isPresent()) {
+            Usuario usuario = usuarioExistente.get();
+            usuario.setNombre(usuarioActualizado.getNombre());
+            usuario.setRol(usuarioActualizado.getRol());
+            usuario.setContrasena(usuarioActualizado.getContrasena());
+            return usuarioRepository.save(usuario);
         } else {
-            throw new RuntimeException("Usuario no encontrado");
+            return null;
         }
     }
 
-    // Eliminar un usuario por su ID
-    public void eliminarUsuario(Integer id) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
+    public void eliminarUsuario(int id) {
+        usuarioRepository.deleteById(id);
     }
 }
