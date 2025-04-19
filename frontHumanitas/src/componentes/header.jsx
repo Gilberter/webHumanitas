@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaRegUserCircle } from "react-icons/fa";
 import "./header.css";
 
-function Header({ setShowLogin }) {
+function Header() {
+  const [showLogin, setShowLogin] = useState(false); 
+
   return (
+    <>
     <nav className="navbar navbar-expand-md header">
       <div className="container-fluid nav-container">
         {/* Logo + Hamburguesa */}
@@ -28,7 +31,7 @@ function Header({ setShowLogin }) {
         <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
           <ul className="navbar-nav nav-left d-flex flex-row align-items-center">
             <li>
-              <a className="nav-link active" href="#">Registrarse</a>
+              <a href="/login" className="nav-link active">Registrarse</a>
             </li>
             <li>
               <a className="nav-link active" href="#">Contacto</a>
@@ -37,6 +40,33 @@ function Header({ setShowLogin }) {
         </div>
       </div>
     </nav>
+
+    {/* Modal fuera del main para mejor posicionamiento */}
+    {showLogin && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <h2>Iniciar Sesión</h2>
+          <input 
+            type="text" 
+            placeholder="Usuario" 
+            className="modal-input"
+          />
+          <input 
+            type="password" 
+            placeholder="Contraseña" 
+            className="modal-input"
+          />
+          <button className="modal-btn login-btn">Entrar</button>
+          <button 
+            className="modal-btn close-btn" 
+            onClick={() => setShowLogin(false)}
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 
