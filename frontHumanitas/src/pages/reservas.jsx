@@ -46,7 +46,7 @@ const Reservas = () => {
   };
 
   // Cancelación de la reserva
-  const cancelarReserva = (dia) => {
+  const cancelarReserva = () => {
     setShowModal(false);
     // Envió al back  -------------------------------------------------------------------
     alert(`¡Reserva Cancelada con éxito para el día ${diaSeleccionado}!`);
