@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 @Entity
 public class Inventario {
 
+    private Boolean disponibilidad;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -68,4 +70,14 @@ public class Inventario {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+    public Boolean getDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(Boolean disponibilidad) {
+        this.disponibilidad = disponibilidad;
+    }
+
+
 }

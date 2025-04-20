@@ -12,6 +12,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     // Buscar reserva por usuario
     Optional<Reserva> findByUsuarioId(Integer usuarioId);
 
-    // Buscar reserva por almuerzo
-    Optional<Reserva> findByAlmuerzoId(Integer almuerzoId);
+    // Buscar reserva por producto (almuerzo)
+    Optional<Reserva> findByProductoReservadoId(Integer productoId);
 }

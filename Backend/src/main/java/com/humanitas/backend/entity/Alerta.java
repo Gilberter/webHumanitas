@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Alerta {
 
+    private Boolean activo;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -51,4 +53,13 @@ public class Alerta {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
 }
