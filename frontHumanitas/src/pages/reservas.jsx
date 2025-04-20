@@ -1,27 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./reservas.css";
 import Header from "../componentes/header.jsx";
 import Footer from "../componentes/footer.jsx";
 
-const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-
 const Reservas = () => {
+
+  // Cargar reservas desde API json
+  const [menu, setMenu] = useState([]);
+  useEffect(() => {
+    fetch("/menuSemanalTest.json") // endpoint -------------------------------------------------------------------
+      .then((res) => res.json())
+      .then((data) => setMenu(data.menu_semanal))
+      .catch((err) => console.error("Error al cargar el menú:", err));
+  }, []);
+
+
   const [diaSeleccionado, setDiaSeleccionado] = useState("");
+  const [accion, setAccion] = useState("");
+  const [showModal, setShowModal] = useState(false); 
 
   // Abre el modal y actualiza el día
-  const abrirModal = (dia) => {
+  const abrirModal = (dia, accion) => {
     setDiaSeleccionado(dia);
-    const modal = new Modal(document.getElementById("miModal"));
-    modal.show();
+    setAccion(accion)
+    setShowModal(true);
   };
 
   // Confirmación de la reserva
+  const confirmarCancelarReserva = () => {
+    setShowModal(false);
+    if (accion == "Reservar") {
+      confirmarReserva();
+    } else if (accion == "Cancelar") {
+      cancelarReserva();
+    }
+  };
+
+  // Confimación de la reserva
   const confirmarReserva = () => {
+    setShowModal(false);
+    // Envió al back  -------------------------------------------------------------------
     alert(`¡Reserva confirmada para el día ${diaSeleccionado}!`);
-    const modal = Modal.getInstance(document.getElementById("miModal"));
-    modal.hide();
+  };
+
+  // Cancelación de la reserva
+  const cancelarReserva = () => {
+    setShowModal(false);
+    // Envió al back  -------------------------------------------------------------------
+    alert(`¡Reserva Cancelada con éxito para el día ${diaSeleccionado}!`);
   };
 
   return (
@@ -30,24 +58,16 @@ const Reservas = () => {
       <div className="container">
         <h1 className="text-center mt-4 mb-4">Menú semanal</h1>
         <div className="row justify-content-center gx-0 mb-4">
-          {dias.map((dia, index) => (
+          {menu.map((item, index) => (
             <div className="col-6 col-md-4 col-xl-3" key={index}>
               <div className="card m-2">
-                <img
-                  className="img-fluid rounded"
-                  alt={`Imagen del día ${dia}`}
-                  src="https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg"
-                />
+                <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagen}/>
                 <div className="card-body">
-                  <h2 className="card-title">{dia}</h2>
-                  <p className="card-text">Contenido</p>
-                  <button
-                    className="btn btn-primary w-100 mb-2"
-                    onClick={() => abrirModal(dia)}
-                  >
-                    Reservar
-                  </button>
-                  <button className="btn btn-danger w-100">Cancelar</button>
+                  <h1 className="card-title">{item.dia}</h1>
+                  <h4 className="card-title">{item.plato}</h4>
+                  <p className="card-text">{item.descripcion}</p>
+                  <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item.dia, "Reservar")}>Reservar</button>
+                  <button className="btn btn-danger w-100" onClick={() => abrirModal(item.dia, "Cancelar")}>Cancelar reserva</button>
                 </div>
               </div>
             </div>
@@ -56,52 +76,28 @@ const Reservas = () => {
       </div>
 
       {/* Modal */}
-      <div
-        className="modal fade"
-        id="miModal"
-        tabIndex="-1"
-        aria-labelledby="tituloModal"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="tituloModal">
-                Confirmación
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
-            </div>
-            <div className="modal-body text-center">
-              <p>
-                Estás a punto de realizar una reserva para el día{" "}
-                <strong>{diaSeleccionado}</strong>.
-              </p>
-              <p>¿Deseas continuar?</p>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={confirmarReserva}
-              >
-                ¡Reservar!
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
+      {showModal && (
+        <>
+          <div className="modal d-block show" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Confirmación</h5>
+                  <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                </div>
+                <div className="modal-body text-center">
+                  <p> Estás a punto de <strong>{accion}</strong> una reserva para el día{" "}<strong>{diaSeleccionado}</strong></p>
+                  <p>¿Deseas continuar?</p>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-primary" onClick={() => {confirmarCancelarReserva();}}>¡{accion}!</button>
+                  <button type="button" className="btn btn-danger" onClick={() => setShowModal(false)}>Cancelar</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
+        </>
+      )}
       <Footer />
     </>
   );
