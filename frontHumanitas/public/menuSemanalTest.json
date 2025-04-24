@@ -11,6 +11,24 @@
         "plato": "Pasta al pesto",
         "descripcion": "Tallarines con salsa de albahaca.",
         "imagen": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg"
+      },
+      {
+        "dia": "Miercoles",
+        "plato": "Pasta al pesto",
+        "descripcion": "Tallarines con salsa de albahaca.",
+        "imagen": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg"
+      },
+      {
+        "dia": "Jueves",
+        "plato": "Pasta al pesto",
+        "descripcion": "Tallarines con salsa de albahaca.",
+        "imagen": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg"
+      },
+      {
+        "dia": "Viernes",
+        "plato": "Pasta al pesto",
+        "descripcion": "Tallarines con salsa de albahaca.",
+        "imagen": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg"
       }
     ]
   }
