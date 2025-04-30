@@ -1,12 +1,11 @@
 // Para reportes necesito ventas de almuerzos, reservas , ventas de bebidas y productos varios.
 
 import React, { useEffect, useState } from "react";
-import Header from "../componentes/header.jsx";
-import Footer from "../componentes/footer.jsx";
+import Header from "../../componentes/Header/header.jsx";
+import Footer from "../../componentes/Footer/footer.jsx";
 
 import { PieChart, Pie, Cell, Legend, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer  } from 'recharts';
-
-
+import "./reportes.css";
 
 
 const Reportes = () => {

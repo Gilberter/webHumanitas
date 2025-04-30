@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Header from "../componentes/header.jsx";
-import Footer from "../componentes/footer.jsx";
+import Header from "../../componentes/Header/header.jsx";
+import Footer from "../../componentes/Footer/footer.jsx";
 
 import { Link } from "react-router-dom";
 

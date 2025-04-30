@@ -1,8 +1,9 @@
 import React from 'react';
+import "./footer.css";
 
 function Footer() {
   return (
-    <footer className="text-light py-4 container-fluid w-100" style={{ backgroundColor: "#99cc33" }}>
+    <footer className="footer text-light py-4 container-fluid w-100">
       <div className="container text-center">
         <p className="mb-1">&copy; {new Date().getFullYear()} Café Humanitas. Todos los derechos reservados.</p>
         <p className="mb-0">

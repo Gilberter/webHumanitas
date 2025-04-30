@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../componentes/header.jsx";
-import Footer from "../componentes/footer.jsx";
+import Header from "../../componentes/Header/header.jsx";
+import Footer from "../../componentes/Footer/footer.jsx";
 import "./home.css";
-import imagen from "../assets/imagen-home.jpeg";
+import imagen from "../../assets/imagen-home.jpeg"
 import { Link } from "react-router-dom";
 
 
@@ -25,7 +25,7 @@ const Home = () => {
           <p className="text-center">
             Descubre el sabor que despierta tus sentidos...
           </p>
-        </div>
+      </div>
 
         <div className=" d-flex flex-row col-12 col-md-6 p-20 flex-grow-1">
           <Link to="/reservas" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">

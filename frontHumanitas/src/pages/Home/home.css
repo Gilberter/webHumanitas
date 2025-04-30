@@ -1,7 +1,4 @@
-:root {
-    --verde-uis: #99cc33;
-    --verde-uis-oscuro: rgba(85, 114, 28, 0.7);
-}
+
 
 .body{
     width: 100%;
@@ -15,7 +12,7 @@ p{
 
 .top-div{   
     height: 399px;
-    background-image: url("../assets/imagen-home.jpeg");
+    background-image: url("../../assets/imagen-home.jpeg");
     align-items: center;
 }
 .green {

@@ -1,6 +1,6 @@
 .header {
   height: 70px;
-  background-color: #99cc33;
+  background-color: var(--verde-uis);
   color: black;
 }
 

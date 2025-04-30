@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./reservas.css";
-import Header from "../componentes/header.jsx";
-import Footer from "../componentes/footer.jsx";
+import Header from "../../componentes/Header/header.jsx";
+import Footer from "../../componentes/Footer/footer.jsx";
 
 const Reservas = () => {
 
