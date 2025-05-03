@@ -25,7 +25,7 @@ function Header() {
   return (
     <>
     <nav className="navbar navbar-expand-md header">
-      <div className="container-fluid nav-container">
+      <div className="h-100 container-fluid nav-container">
         {/* Logo + Hamburguesa */}
         <div className="d-flex align-items-center">
           <button className="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,44 +35,52 @@ function Header() {
         </div>
 
         {/* Icono + Iniciar Sesión */}
-        <ul className="navbar-nav nav-right d-flex flex-row align-items-center">
-          {isAuthenticated ? 
-            <li className="d-flex align-items-center">
+        
+        {isAuthenticated ? 
+          <ul className="h-100 navbar-nav nav-right d-flex flex-row align-items-center justify-content-center text-center">
+            <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+              <a className='nav-link active' href="">Reservas</a>
+            </li>
+            <li className='nav-item nav-item-bg  align-content-center nav-item-bg-hover'>
+              <a className='nav-link active' href="">Pedidos</a>
+            </li>
+            <li className="d-flex align-items-center nav-item nav-item-bg-hover" >
               <FaRegUserCircle size={20} />
               <a href="#" className="nav-link active ps-2" >
                 {user.name}
               </a>
             </li>
-          : 
-            <li className="d-flex align-items-center">
-              <FaRegUserCircle size={20} />
-              <a href="#" className="nav-link active ps-2" onClick={() => setShowLogin(true)}>
-                Iniciar Sesión
-              </a>
+          </ul>
+        : 
+        <ul className="h-100 navbar-nav nav-right d-flex flex-row align-items-center align-items-center justify-content-center text-center">
+          <li className="d-flex align-items-center nav-item-bg-hover nav-item">
+            <FaRegUserCircle size={20} />
+            <a href="#" className="nav-link active ps-2" onClick={() => setShowLogin(true)}>
+              Iniciar Sesión
+            </a>
           </li>
-        }
-
         </ul>
+      }
 
         {/* Collapse Items */}
-        <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <div className="h-100 collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
           
             {isAuthenticated ? 
-              <ul className="navbar-nav nav-left d-flex flex-row align-items-center">
-                <li>
+              <ul className="h-100 navbar-nav nav-left d-flex flex-row align-items-center justify-content-center text-center">
+                <li className="nav-item nav-item-bg-hover align-content-center">
                   <a href="/" className="nav-link active" onClick={(e) => {e.preventDefault(); logout();}}>Cerrar Sesion</a>
                 </li>
-                <li>
+                <li className='nav-item nav-item-bg-hover align-content-center'>
                   <a className="nav-link active" href="#" >Contacto</a>
                 </li>
               </ul>
               :
-              <ul className="navbar-nav nav-left d-flex flex-row align-items-center">
-                <li>
+              <ul className="h-100 navbar-nav nav-left d-flex flex-row align-items-center">
+                <li className='nav-item nav-item-bg-hover align-content-center'>
                   <a href="/login" className="nav-link active">Registrarse</a>
                 </li>
-                <li>
-                  <a className="nav-link active" href="#">Contacto</a>
+                <li className='nav-item nav-item-bg-hover align-content-center'>
+                  <a className="nav-link active" href="#">Contactanos</a>
                 </li>
               </ul>
             }

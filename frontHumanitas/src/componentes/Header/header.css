@@ -10,8 +10,23 @@
   align-items: center;
 }
 
-.nav-right li:hover,
-.nav-left li:hover {
-  background-color: rgb(126, 169, 41);
+
+.nav-item{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.nav-item-bg{
+  background-color: var(--verde-uis-oscuro);
+  height: 100%;
+}
+.nav-item-bg-hover{
+  height: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.nav-item-bg-hover:hover{
+  background-color: var(--verde-uis-oscuro-transparente);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.navbar{
+  padding: 0px;
 }

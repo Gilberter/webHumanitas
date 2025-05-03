@@ -14,7 +14,7 @@ const Home = () => {
     <main className="page-wrapper">
       <Header/>
       <div className="top-div row m-0 p-0">
-        <h1 className="col-12 text-center text-md-start m-0 p-0">
+        <h1 className="px-lg-4 col-12 text-center text-md-start m-0 p-0">
           <span className="green">Café</span>   
           <span className="white">Humanitas</span>
         </h1>
@@ -28,14 +28,14 @@ const Home = () => {
       </div>
 
         <div className=" d-flex flex-row col-12 col-md-6 p-20 flex-grow-1">
-          <Link to="/reservas" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
-            <p>Ver Menú Semanal</p>
+          <Link to="/reservas" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">      
+            <p>Ver<br/> Menú<br/>  Semanal<br/> </p>
           </Link>
-          <Link to="/#" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
-            <p>Ver Productos</p>
+          <Link to="/#" className="bg-image-1 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
+            <p>Ver<br/>  Productos</p>
           </Link>
-          <Link to="/reservas" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
-            <p>Ver Bebidas</p>
+          <Link to="/reservas" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
+            <p>Ver <br/> Bebidas</p>
           </Link>
         </div>
       </div>
