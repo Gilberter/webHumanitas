@@ -32,13 +32,27 @@ p{
 .option{
   cursor: pointer;
   border-radius: 5px;
-  padding: 15px 15px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .option:hover{
-  background-color: rgb(126, 169, 41);
+  background-color: var(--verde-uis-oscuro-transparente);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.option section{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  background-color: var(--verde-uis-oscuro-transparente);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.option section:hover{
+  background-color: var(--verde-uis-oscuro-transparente-5);
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.3);
 }
 .green {
     color: rgb(153, 204, 51);

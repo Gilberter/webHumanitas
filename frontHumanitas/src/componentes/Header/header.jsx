@@ -7,11 +7,9 @@ function Header() {
   const { user, isAuthenticated, logout, login } = useAuth();
   const [showLogin, setShowLogin] = useState(false); 
   const [credentials, setCredentials] = useState({ username: "", password: "" });
-
+  const [showMenuModal, setShowMenuModal] = useState(false); // Estado para controlar la visibilidad del menú modal
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-
-    
   };
   const handleLogin = async () => {
     const success = await login(credentials.username, credentials.password);
@@ -28,67 +26,108 @@ function Header() {
       <div className="h-100 container-fluid nav-container">
         {/* Logo + Hamburguesa */}
         <div className="d-flex align-items-center">
-          <button className="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <a href="/home" className="navbar-brand">Logo</a>
+            <button
+              className="navbar-toggler me-3"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              onClick={() => setShowMenuModal(!showMenuModal)} // Cambia el estado del menú modal
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <a href="/home" className="navbar-brand">Logo</a>
         </div>
 
-        {/* Icono + Iniciar Sesión */}
-        
-        {isAuthenticated ? 
-          <ul className="h-100 navbar-nav nav-right d-flex flex-row align-items-center justify-content-center text-center">
-            <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
-              <a className='nav-link active' href="">Reservas</a>
-            </li>
-            <li className='nav-item nav-item-bg  align-content-center nav-item-bg-hover'>
-              <a className='nav-link active' href="">Pedidos</a>
-            </li>
-            <li className="d-flex align-items-center nav-item nav-item-bg-hover" >
+        {/*Iniciar Sesión No se Collapse, para pantallas pequeñas a la derecha*/}
+        {
+          isAuthenticated ? 
+            <ul className="navbar-nav flex-md-row d-flex align-items-center nav-right h-100 align-items-center text-center">
+              <li className='nav-item align-content-center nav-item-bg-hover d-flex text-center align-items-center'>
+                <FaRegUserCircle size={20} />
+                <a href="#" className="nav-link active ps-2" >
+                  {user.name}
+                </a>
+              </li>
+            </ul>
+          : 
+          <ul className="navbar-nav flex-md-row d-flex align-items-center nav-right h-100 align-items-center text-center justify-content-start">
+            <li className='nav-item align-content-center nav-item-bg-hover d-flex text-center align-items-center'>
               <FaRegUserCircle size={20} />
-              <a href="#" className="nav-link active ps-2" >
-                {user.name}
+              <a href="#" className="nav-link active ps-2" onClick={() => setShowLogin(true)} >
+                Iniciar Sesión
               </a>
             </li>
           </ul>
-        : 
-        <ul className="h-100 navbar-nav nav-right d-flex flex-row align-items-center align-items-center justify-content-center text-center">
-          <li className="d-flex align-items-center nav-item-bg-hover nav-item">
-            <FaRegUserCircle size={20} />
-            <a href="#" className="nav-link active ps-2" onClick={() => setShowLogin(true)}>
-              Iniciar Sesión
-            </a>
-          </li>
-        </ul>
-      }
+        }
+        
 
         {/* Collapse Items */}
-        <div className="h-100 collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-          
-            {isAuthenticated ? 
-              <ul className="h-100 navbar-nav nav-left d-flex flex-row align-items-center justify-content-center text-center">
-                <li className="nav-item nav-item-bg-hover align-content-center">
-                  <a href="/" className="nav-link active" onClick={(e) => {e.preventDefault(); logout();}}>Cerrar Sesion</a>
-                </li>
-                <li className='nav-item nav-item-bg-hover align-content-center'>
-                  <a className="nav-link active" href="#" >Contacto</a>
-                </li>
-              </ul>
-              :
-              <ul className="h-100 navbar-nav nav-left d-flex flex-row align-items-center">
-                <li className='nav-item nav-item-bg-hover align-content-center'>
-                  <a href="/login" className="nav-link active">Registrarse</a>
-                </li>
-                <li className='nav-item nav-item-bg-hover align-content-center'>
-                  <a className="nav-link active" href="#">Contactanos</a>
-                </li>
-              </ul>
-            }
-
-          
+        <div className="h-100 collapse navbar-collapse " id="navbarSupportedContent">
+          {isAuthenticated ? 
+            <ul className="h-100 navbar-nav nav-right flex-md-row d-flex flex-row align-items-center text-center">
+              <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                <a className='nav-link active' href="">Reservas</a>
+              </li>
+              <li className='nav-item nav-item-bg  align-content-center nav-item-bg-hover'>
+                <a className='nav-link active' href="">Pedidos</a>
+              </li>
+            </ul>
+          : 
+            <p></p>
+          }
+          {isAuthenticated ? 
+            <ul className="h-100 navbar-nav flex-md-row nav-left d-flex flex-row align-items-center justify-content-end ms-auto text-center">
+              <li className="nav-item nav-item-bg-hover align-content-center">
+                <a href="/" className="nav-link active" onClick={(e) => {e.preventDefault(); logout();}}>Cerrar Sesion</a>
+              </li>
+              <li className='nav-item nav-item-bg-hover align-content-center'>
+                <a className="nav-link active" href="#" >Contacto</a>
+              </li>
+            </ul>
+            :
+            <ul className="h-100 navbar-nav flex-md-row nav-left d-flex flex-row align-items-center justify-content-end ms-auto text-center">
+              <li className='nav-item nav-item-bg-hover align-content-center'>
+                <a href="/login" className="nav-link active">Registrarse</a>
+              </li>
+              <li className='nav-item nav-item-bg-hover align-content-center'>
+                <a className="nav-link active" href="#">Contactanos</a>
+              </li>
+            </ul>
+          } 
         </div>
       </div>
     </nav>
+    {/* Modal del menú */}
+    {showMenuModal && (
+      <div className={`menu-modal-overlay ${showMenuModal ? 'active' : ''}`}>
+        <div className="menu-modal-content">
+          <ul>
+            {isAuthenticated ? 
+              <>
+                <li><a href="/reservas">Reservas</a></li>
+                <li><a href="/pedidos">Pedidos</a></li>
+                <li><a href="/contacto">Contacto</a></li>
+                <li>
+                  <a href="/" onClick={(e) => { e.preventDefault(); logout(); }}>
+                    Cerrar Sesión
+                  </a>
+                </li>
+              </>
+            :
+              <>
+                <li><a href="/login">Registrarse</a></li>
+                <li><a href="/contacto">Contactanos</a></li>
+              </>
+            }
+            
+          </ul>
+          <button onClick={() => setShowMenuModal(false)}>Cerrar</button>
+        </div>
+      </div>
+    )}
 
     {/* Modal fuera del main para mejor posicionamiento */}
     {showLogin && (

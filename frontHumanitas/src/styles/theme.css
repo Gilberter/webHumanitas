@@ -1,10 +1,11 @@
 :root {
     /*Paleta de Colores*/
     --verde-uis-claro: rgba(153, 204, 51);
-    --verde-uis-claro-transparente: rgba(153, 204, 51, 0.6);
+    --verde-uis-claro-transparente: rgba(153, 204, 51, 0.7);
     --verde-uis: #99cc33;
     --verde-uis-oscuro: rgb(0, 104, 55);
     --verde-uis-oscuro-transparente: rgba(0, 104, 55, 0.7);
+    --verde-uis-oscuro-transparente-5: rgba(0, 104, 55, 0.5);
     /*Tipografia*/
     --font-size-base: 1rem; /* Tamaño de fuente base */
     --font-size-lg: 1.25rem; /* Tamaño de fuente grande */

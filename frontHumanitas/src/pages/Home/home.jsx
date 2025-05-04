@@ -32,10 +32,14 @@ const Home = () => {
             <p>Ver<br/> Menú<br/>  Semanal<br/> </p>
           </Link>
           <Link to="/#" className="bg-image-1 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
-            <p>Ver<br/>  Productos</p>
+            <section>
+              <p>Ver<br/>  Productos</p>
+            </section>
           </Link>
           <Link to="/reservas" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
-            <p>Ver <br/> Bebidas</p>
+            <section>
+              <p>Ver <br/> Bebidas</p>
+            </section>
           </Link>
         </div>
       </div>
