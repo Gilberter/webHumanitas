@@ -31,7 +31,7 @@ const Historial = () => {
         <p className="text-center">Total entradas: {resumen.entradas}</p>
         <p className="text-center">Total gastado: {resumen.total}</p>
 
-        <table class="table table-striped table-hover table-bordered">
+        <table class="table table-striped">
             <thead >
                 <tr>
                     <td>#</td>
@@ -42,16 +42,18 @@ const Historial = () => {
                     <td>Precio</td>
                 </tr>
             </thead>
-            {historial.map((item, index) => (
-                <tbody>
+              <tbody>
+                {historial.map((item, index) => (
+                  <tr key={index}>
                     <td>{index}</td>
                     <td>{item.fecha}</td>
                     <td>{item.tipo}</td>
                     <td>{item.diaReservado}</td>
                     <td>{item.estado}</td>
                     <td>{item.precio}</td>
-                </tbody>
-            ))}
+                  </tr>
+                ))}
+              </tbody>
         </table>
       </div>
       <Footer />

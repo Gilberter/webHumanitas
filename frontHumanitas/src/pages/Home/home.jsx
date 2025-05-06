@@ -31,12 +31,12 @@ const Home = () => {
           <Link to="/reservas" className="option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">      
             <p>Ver<br/> Menú<br/>  Semanal<br/> </p>
           </Link>
-          <Link to="/#" className="bg-image-1 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
+          <Link to="/productos" className="bg-image-1 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
             <section>
               <p>Ver<br/>  Productos</p>
             </section>
           </Link>
-          <Link to="/reservas" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
+          <Link to="/productos?categoria=bebidas" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
             <section>
               <p>Ver <br/> Bebidas</p>
             </section>
