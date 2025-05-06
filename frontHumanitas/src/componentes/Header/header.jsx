@@ -93,7 +93,7 @@ function Header() {
                 <a href="/login" className="nav-link active">Registrarse</a>
               </li>
               <li className='nav-item nav-item-bg-hover align-content-center'>
-                <a className="nav-link active" href="#">Contactanos</a>
+                <a className="nav-link active" href="/contacto">Contactanos</a>
               </li>
             </ul>
           } 
