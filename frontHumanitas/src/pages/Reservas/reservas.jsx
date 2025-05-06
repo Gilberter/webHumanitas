@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import "./reservas.css";
 import Header from "../../componentes/Header/header.jsx";
 import Footer from "../../componentes/Footer/footer.jsx";
 
 const Reservas = () => {
 
+  
   // Cargar reservas desde API json
   const [menu, setMenu] = useState([]);
   useEffect(() => {
-    fetch("/menuSemanalTest.json") // endpoint -------------------------------------------------------------------
+    fetch("menuSemanalTest.json") // endpoint -------------------------------------------------------------------
       .then((res) => res.json())
       .then((data) => setMenu(data.menu_semanal))
       .catch((err) => console.error("Error al cargar el menú:", err));

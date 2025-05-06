@@ -38,7 +38,7 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <a href="/home" className="navbar-brand">Logo</a>
+            <a href="/home" className="navbar-brand"><img className="logo" src="logoWH.png" alt='"Logo'></img></a>
         </div>
 
         {/*Iniciar Sesión No se Collapse, para pantallas pequeñas a la derecha*/}
@@ -72,7 +72,7 @@ function Header() {
                 <a className='nav-link active' href="">Reservas</a>
               </li>
               <li className='nav-item nav-item-bg  align-content-center nav-item-bg-hover'>
-                <a className='nav-link active' href="">Pedidos</a>
+                <a className='nav-link active' href="/historial">Historial</a>
               </li>
             </ul>
           : 

@@ -23,3 +23,11 @@ body{
     animation: logo-spin infinite 20s linear;
   }
 }
+
+.container{
+  min-height: 90vh;
+}
+
+p {
+  font-weight: normal !important;
+}
