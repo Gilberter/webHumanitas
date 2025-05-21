@@ -38,7 +38,7 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <a href="/home" className="navbar-brand"><img className="logo" src="logoWH.png" alt='"Logo'></img></a>
+            <a href="/home" className="navbar-brand"><img className="logo" src="../logoWH.png" alt='"Logo'></img></a>
         </div>
 
         {/*Iniciar Sesión No se Collapse, para pantallas pequeñas a la derecha*/}
