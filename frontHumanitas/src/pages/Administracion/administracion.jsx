@@ -89,6 +89,34 @@ const Administracion = () => {
               alert("No se pudo conectar con el servidor.");
             }
           };
+
+
+
+          // Crear nuevo menú
+          const crearNuevoMenu = async () => {
+            const confirmar = window.confirm("Esta acción eliminará el menú actual y creará uno nuevo");
+            if (!confirmar) return;
+
+            try {
+              const response = await fetch("/api/crearNuevoMenu", { // envío al back ----------------------------------------------
+                method: "POST", // o PUT si prefieres
+                headers: {
+                  "Content-Type": "application/json",
+                }
+              });
+          
+              if (response.ok) {
+                alert(`¡Nuevo menú ha sido creado a ${horaLimite}!`);
+              } else {
+                console.error("Error al crear menú");
+                alert("Error al crear menú");
+              }
+            } catch (err) {
+              console.error("Error de conexión:", err);
+              alert("No se pudo conectar con el servidor.");
+            }
+          };
+
           
   return (
     <>
@@ -96,11 +124,23 @@ const Administracion = () => {
     <div className="container">
         <h1 className="text-center mt-4 mb-4">Administración</h1>
 
-        <h4 className="card-title">Hora límite cancelación</h4>
-        <input type="time" defaultValue="02:25" value={horaLimite} onChange={(e) => setHoraLimite(e.target.value)}/>
-        <button className="btn btn-primary mb-2" onClick={() => modificarHoraLímite()}>Modificar</button>
 
         <div className="row justify-content-center gx-0 mb-4">
+          <div className="col-6">
+            <h4 className="card-title">Hora límite cancelación</h4>
+            <input type="time" defaultValue="02:25" value={horaLimite} onChange={(e) => setHoraLimite(e.target.value)}/>
+            <button className="btn btn-primary mb-2" onClick={() => modificarHoraLímite()}>Modificar</button>
+          </div>
+
+          <div className="col-6">
+            <h4 className="card-title">Nuevo menú semanal</h4>
+              <button className="btn btn-primary mb-2" onClick={() => crearNuevoMenu()}>Crear nuevo menú</button>
+              <p>Esta acción notifica a los estudiantes</p>
+          </div>
+        </div>
+
+        <div className="row justify-content-center gx-0 mb-4">
+          <h2>Modificar menú actual</h2>
           {menu.map((item, index) => (
             <div className="col-6 col-md-4 col-xl-2" key={index}>
               <div className="card m-2">
