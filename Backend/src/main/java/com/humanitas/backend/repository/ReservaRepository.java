@@ -1,26 +1,24 @@
 package com.humanitas.backend.repository;
 
-import com.humanitas.backend.entity.EstadoReserva; // Importar el Enum
+import com.humanitas.backend.entity.EstadoReserva;
 import com.humanitas.backend.entity.Reserva;
-import com.humanitas.backend.entity.Usuario; // Importar si se usa directamente el objeto Usuario
+// import com.humanitas.backend.entity.Usuario; // No es necesario si usas IDs
+// import com.humanitas.backend.entity.Inventario; // No es necesario si usas IDs
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.List; // Importar List
-// Optional no es necesario importarlo explícitamente aquí si no se usa en un nuevo metodo
+import java.util.List;
+
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
     // Buscar reservas por ID de usuario
-    // Es más común que un usuario tenga múltiples reservas, así que se devuelve una Lista
     List<Reserva> findByUsuarioId(Long usuarioId); // Asumiendo que Usuario.id es Long
 
     // Buscar reservas por ID del producto reservado
     List<Reserva> findByProductoReservadoId(Long productoId); // Asumiendo que Inventario.id es Long
-
-    // --- Nuevos métodos de búsqueda basados en los cambios ---
 
     // Buscar reservas por fecha específica
     List<Reserva> findByFechaReserva(LocalDate fechaReserva);
@@ -37,4 +35,5 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     // Buscar reservas por producto y fecha
     List<Reserva> findByProductoReservadoIdAndFechaReserva(Long productoId, LocalDate fechaReserva);
 
+    List<Reserva> findByUsuarioIdAndProductoReservadoIdAndFechaReserva(Long usuarioId, Long productoReservadoId, LocalDate fechaReserva);
 }
