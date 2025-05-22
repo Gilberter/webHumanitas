@@ -1,10 +1,15 @@
 package com.humanitas.backend.Controller;
 
+import com.humanitas.backend.entity.EstadoReserva; // Importar si se usa como PathVariable o RequestParam
 import com.humanitas.backend.entity.Reserva;
 import com.humanitas.backend.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat; // Para parsear LocalDate
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate; // Importar LocalDate
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +22,22 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @PostMapping
-    public Reserva crearReserva(@RequestBody Reserva reserva) {
-        return reservaService.crearReserva(reserva);
+    public ResponseEntity<?> crearReserva(@RequestBody Reserva reserva) {
+        try {
+
+            Reserva nuevaReserva = reservaService.crearReserva(reserva);
+            return new ResponseEntity<>(nuevaReserva, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            // Capturar excepciones del servicio (ej. Usuario no encontrado, Producto no disponible)
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Reserva> obtenerReservaPorId(@PathVariable int id) {
+        Optional<Reserva> reserva = reservaService.obtenerReservaPorId(id);
+        return reserva.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -26,18 +45,59 @@ public class ReservaController {
         return reservaService.obtenerTodasLasReservas();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Reserva> obtenerReservaPorId(@PathVariable int id) {
-        return reservaService.obtenerReservaPorId(id);
+    // --- Nuevos Endpoints de ejemplo ---
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Reserva>> obtenerReservasPorUsuarioId(@PathVariable Long usuarioId) {
+        // Asumiendo que el id de Usuario es Long
+        List<Reserva> reservas = reservaService.obtenerReservasPorUsuarioId(usuarioId);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.noContent().build(); // O notFound() si se prefiere
+        }
+        return ResponseEntity.ok(reservas);
     }
 
+    @GetMapping("/fecha")
+    public ResponseEntity<List<Reserva>> obtenerReservasPorFecha(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+        List<Reserva> reservas = reservaService.obtenerReservasPorFecha(fecha);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(reservas);
+    }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<Reserva>> obtenerReservasPorEstado(@PathVariable EstadoReserva estado) {
+        List<Reserva> reservas = reservaService.obtenerReservasPorEstado(estado);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(reservas);
+    }
+
+    // Actualizar una reserva (principalmente para cambiar el estado, ej. cancelar)
     @PutMapping("/{id}")
-    public Reserva actualizarReserva(@PathVariable int id, @RequestBody Reserva reservaActualizada) {
-        return reservaService.actualizarReserva(id, reservaActualizada);
+    public ResponseEntity<?> actualizarReserva(@PathVariable int id, @RequestBody Reserva reservaActualizada) {
+        // El body de reservaActualizada podría solo contener el nuevo 'estado'
+        // o la nueva 'fechaReserva' si se permite modificarla.
+        try {
+            Reserva reserva = reservaService.actualizarReserva(id, reservaActualizada);
+            return ResponseEntity.ok(reserva);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // Si la reserva no se encuentra
+        }
     }
 
+    // Eliminar una reserva (generalmente no recomendado, se prefiere cancelar)
     @DeleteMapping("/{id}")
-    public void eliminarReserva(@PathVariable int id) {
-        reservaService.eliminarReserva(id);
+    public ResponseEntity<Void> eliminarReserva(@PathVariable int id) {
+        try {
+            reservaService.eliminarReserva(id);
+            return ResponseEntity.noContent().build(); // HTTP 204
+        } catch (RuntimeException e) {
+            // Si el servicio lanza una excepción cuando la reserva no se encuentra
+            return ResponseEntity.notFound().build();
+        }
     }
 }

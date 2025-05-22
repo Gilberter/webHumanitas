@@ -1,24 +1,41 @@
 package com.humanitas.backend.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate; // Cambiado de LocalDateTime a LocalDate
 
 @Entity
+@Table(name = "reservas")
 public class Reserva {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id; // Se mantiene como int (equivalente a int32)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producto_id", nullable = false)
     private Inventario productoReservado;
 
-    private LocalDateTime fechaReserva;
+    @Column(name = "fecha_reserva", nullable = false)
+    private LocalDate fechaReserva; // Cambiado a LocalDate para formato año/mes/día
+
+    @Enumerated(EnumType.STRING) // Guarda el Enum como String ("CONFIRMADO", "CANCELADO")
+    @Column(nullable = false)
+    private EstadoReserva estado; // Nuevo campo para el estado
+
+    // Constructores
+    public Reserva() {
+    }
+
+    public Reserva(Usuario usuario, Inventario productoReservado, LocalDate fechaReserva, EstadoReserva estado) {
+        this.usuario = usuario;
+        this.productoReservado = productoReservado;
+        this.fechaReserva = fechaReserva;
+        this.estado = estado;
+    }
 
     // Getters y Setters
 
@@ -46,11 +63,20 @@ public class Reserva {
         this.productoReservado = productoReservado;
     }
 
-    public LocalDateTime getFechaReserva() {
+    public LocalDate getFechaReserva() {
         return fechaReserva;
     }
 
-    public void setFechaReserva(LocalDateTime fechaReserva) {
+    public void setFechaReserva(LocalDate fechaReserva) {
         this.fechaReserva = fechaReserva;
     }
+
+    public EstadoReserva getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoReserva estado) {
+        this.estado = estado;
+    }
+
 }
