@@ -20,7 +20,7 @@ public class InventarioService {
     }
 
     // Obtener un producto por su ID
-    public Optional<Inventario> obtenerProductoPorId(Integer id) {
+    public Optional<Inventario> obtenerProductoPorId(Long id) {
         return inventarioRepository.findById(id);
     }
 
@@ -30,7 +30,7 @@ public class InventarioService {
     }
 
     // Actualizar un producto en el inventario
-    public Inventario actualizarProducto(Integer id, Inventario productoActualizado) {
+    public Inventario actualizarProducto(Long id, Inventario productoActualizado) {
         if (inventarioRepository.existsById(id)) {
             productoActualizado.setId(id);
             return inventarioRepository.save(productoActualizado);
@@ -40,7 +40,7 @@ public class InventarioService {
     }
 
     // Eliminar un producto por su ID
-    public void eliminarProducto(Integer id) {
+    public void eliminarProducto(Long id) {
         if (inventarioRepository.existsById(id)) {
             inventarioRepository.deleteById(id);
         } else {

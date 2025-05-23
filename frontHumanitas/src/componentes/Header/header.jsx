@@ -6,13 +6,14 @@ import { useAuth } from '../../context/AuthContext';
 function Header() {
   const { user, isAuthenticated, logout, login } = useAuth();
   const [showLogin, setShowLogin] = useState(false); 
-  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [credentials, setCredentials] = useState({ correo: "", contrasena: "" });
   const [showMenuModal, setShowMenuModal] = useState(false); // Estado para controlar la visibilidad del menú modal
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   const handleLogin = async () => {
-    const success = await login(credentials.username, credentials.password);
+    console.log("Credenciales ingresadas:", credentials);
+    const success = await login(credentials.correo, credentials.contrasena);
     if (success) {
       setShowLogin(false); // Cerrar modal inmediatamente si el inicio de sesión fue exitoso
     } else {
@@ -48,7 +49,7 @@ function Header() {
               <li className='nav-item align-content-center nav-item-bg-hover d-flex text-center align-items-center'>
                 <FaRegUserCircle size={20} />
                 <a href="#" className="nav-link active ps-2" >
-                  {user.name}
+                  {user && user.nombre}
                 </a>
               </li>
             </ul>
@@ -135,9 +136,9 @@ function Header() {
         <div className="modal-content">
           <h2>Iniciar Sesión</h2>
           <input 
-            type="text" 
-            name='username'
-            placeholder="Usuario" 
+            type="email" 
+            name='correo'
+            placeholder="Correo Electrónico" 
             required
             onChange={handleChange}
             className="modal-input"
@@ -145,7 +146,7 @@ function Header() {
           />
           <input 
             type="password" 
-            name='password'
+            name='contrasena'
             placeholder="Contraseña" 
             required
             onChange={handleChange}

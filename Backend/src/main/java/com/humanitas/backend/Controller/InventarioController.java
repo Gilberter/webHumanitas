@@ -24,7 +24,7 @@ public class InventarioController {
 
     // Obtener producto por ID
     @GetMapping("/{id}")
-    public Optional<Inventario> obtenerProductoPorId(@PathVariable Integer id) {
+    public Optional<Inventario> obtenerProductoPorId(@PathVariable Long id) {
         return inventarioService.obtenerProductoPorId(id);
     }
 
@@ -36,13 +36,13 @@ public class InventarioController {
 
     // Actualizar producto
     @PutMapping("/{id}")
-    public Inventario actualizarProducto(@PathVariable Integer id, @RequestBody Inventario inventarioActualizado) {
+    public Inventario actualizarProducto(@PathVariable Long id, @RequestBody Inventario inventarioActualizado) {
         return inventarioService.actualizarProducto(id, inventarioActualizado);
     }
 
     // Eliminar producto
     @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable Integer id) {
+    public void eliminarProducto(@PathVariable Long id) {
         inventarioService.eliminarProducto(id);
     }
 }

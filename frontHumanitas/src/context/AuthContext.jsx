@@ -10,34 +10,31 @@ export const AuthProvider = ({children = null}) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const login = async (username, password) => {
+    // Cambiado: ahora consulta el backend
+    const login = async (correo, contrasena) => {
         try {
-            // Cargar el archivo JSON de usuarios
-            const response = await fetch("user.json");
-            const usersObject = await response.json();
-
-            const usersNestedArray = Object.values(usersObject); // Convertir el objeto a un array
-    
-            console.log(username, password);
-            
-            const users = usersNestedArray.flat()
-            console.log(users);
-            const foundUser = users.find(user => user.username === username && user.password === password); // Buscar el usuario
-            
-            if (foundUser) {
-                setUser(foundUser); // Guardar el usuario autenticado
-                setIsAuthenticated(true); // Cambiar el estado de autenticación
+            const response = await fetch(
+                `http://localhost:8080/api/usuarios/login?correo=${(correo)}&contrasena=${(contrasena)}`
+            );
+            if (response.ok) {
+                const userData = await response.json();
+                console.log("Usuario autenticado:", userData);
+                setUser(userData);
+                setIsAuthenticated(true);
                 return true;
             } else {
+                setUser(null);
+                setIsAuthenticated(false);
                 console.error("Usuario o contraseña incorrectos.");
                 return false;
             }
         } catch (err) {
+            setUser(null);
+            setIsAuthenticated(false);
             console.log("Error al autenticar:", err);
-
+            return false;
         }
     };
-    
 
     const logout = () => {
         setUser(null);
@@ -49,6 +46,5 @@ export const AuthProvider = ({children = null}) => {
             {children}
         </AuthContext.Provider>
     );
-
 }
 export const useAuth = () => useContext(AuthContext);

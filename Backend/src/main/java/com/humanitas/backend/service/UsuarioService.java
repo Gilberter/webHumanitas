@@ -28,6 +28,10 @@ public class UsuarioService {
     public Optional<Usuario> obtenerUsuarioPorId(Long id) { // Cambiado int a Long
         return usuarioRepository.findById(id);
     }
+    @Transactional(readOnly = true)
+    public Optional<Usuario> obtenerUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
+    }
 
     @Transactional(readOnly = true)
     public List<Usuario> obtenerTodosLosUsuarios() {

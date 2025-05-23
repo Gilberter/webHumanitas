@@ -36,6 +36,20 @@ public class UsuarioController {
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioService.obtenerTodosLosUsuarios();
     }
+    @GetMapping("/login")
+    public ResponseEntity<Usuario> loginUsuario(
+            @RequestParam String correo,
+            @RequestParam String contrasena) {
+        Optional<Usuario> usuarioOpt = usuarioService.obtenerUsuarioPorCorreo(correo);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            // Comparar contraseñas (en producción, usa hash)
+            if (usuario.getContrasena().equals(contrasena)) {
+                return ResponseEntity.ok(usuario);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) { // Cambiado int a Long
