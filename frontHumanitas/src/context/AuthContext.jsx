@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext} from "react";
+import React, {createContext, useState, useContext, useEffect} from "react";
 
 const AuthContext = createContext();
 
@@ -6,9 +6,23 @@ export const AuthProvider = ({children = null}) => {
     if (!children) {
         console.log("AuthProvider no recibió ningún children.");
     }
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        return localStorage.getItem("isAuthenticated") === "true";
+    });
 
-    const [user, setUser] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("isAuthenticated", "true");
+        } else {
+            localStorage.removeItem("user");
+            localStorage.setItem("isAuthenticated", "false");
+        }
+    }, [user, isAuthenticated]);
 
     // Cambiado: ahora consulta el backend
     const login = async (correo, contrasena) => {

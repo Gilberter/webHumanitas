@@ -3,26 +3,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from "../../componentes/Header/header.jsx";
 import Footer from "../../componentes/Footer/footer.jsx";
+import { useAuth } from "../../context/AuthContext";
 
 const Reservas = () => {
 
-  
+  // Si el usuario esta logeado
+  const { user, isAuthenticated } = useAuth();
+
   // Cargar reservas desde API json
   const [menu, setMenu] = useState([]);
   useEffect(() => {
-    fetch("menuSemanalTest.json") // endpoint -------------------------------------------------------------------
+    fetch("http://localhost:8080/api/menu-semanal")
       .then((res) => res.json())
-      .then((data) => setMenu(data.menu_semanal))
+      .then((data) => setMenu(data)) 
       .catch((err) => console.error("Error al cargar el menú:", err));
   }, []);
 
-
+  console.log("Menú semanal:", menu);
   const [diaSeleccionado, setDiaSeleccionado] = useState("");
   const [accion, setAccion] = useState("");
   const [showModal, setShowModal] = useState(false); 
 
   // Abre el modal y actualiza el día
   const abrirModal = (dia, accion) => {
+    console.log("Abriendo modal para el día:", dia, "Acción:", accion);
     setDiaSeleccionado(dia);
     setAccion(accion)
     setShowModal(true);
@@ -38,18 +42,59 @@ const Reservas = () => {
     }
   };
 
-  // Confimación de la reserva
-  const confirmarReserva = () => {
-    setShowModal(false);
-    // Envió al back  -------------------------------------------------------------------
-    alert(`¡Reserva confirmada para el día ${diaSeleccionado}!`);
+
+  // Cancelar reserva (puedes adaptar el endpoint según tu backend)
+  const cancelarReserva = async () => {
+    // Aquí deberías buscar el id de la reserva y hacer un DELETE o PUT según tu backend
+    alert(`¡Reserva Cancelada con éxito para el día ${diaSeleccionado}! (Implementa el endpoint en el backend)`);
   };
 
-  // Cancelación de la reserva
-  const cancelarReserva = () => {
-    setShowModal(false);
-    // Envió al back  -------------------------------------------------------------------
-    alert(`¡Reserva Cancelada con éxito para el día ${diaSeleccionado}!`);
+  // Buscar el id del menú semanal por día
+  const getMenuByDia = (dia) => {
+    const item = menu.find((m) => m.dia === dia);
+    console.log(item);
+    return item && item ? item : null;
+  };
+
+  // Hacer reserva (POST al backend)
+  const confirmarReserva = async () => {
+    if (!isAuthenticated || !user) {
+      alert("Debes iniciar sesión para reservar.");
+      return;
+    }
+    const menu = getMenuByDia(diaSeleccionado);
+    console.log("ID del menú para el día seleccionado:", menu.id);
+    console.log("Usuario ID:", user.id);
+    if (menu == null) {
+      alert("No se encontró el menú para ese día.");
+      return;
+    }
+    // Construir objeto reserva según backend
+    const reserva = {
+      estado: "CONFIRMADO",
+      fechaReserva: new Date().toISOString().slice(0, 10), ////// YYYY-MM-DD
+      menuSemanal: menu,
+      usuario: user,
+      
+    };
+    console.log("Reserva a enviar:", reserva);
+    try {
+      const response = await fetch("http://localhost:8080/api/reservas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reserva),
+      });
+      if (response.ok) {
+        alert(`¡Reserva confirmada para el día ${diaSeleccionado}!`);
+      } else {
+        const errorMsg = await response.text(); // Lee el mensaje de error del backend
+        alert("No se pudo realizar la reserva: " + errorMsg);
+      }
+    } catch (error) {
+      alert("Error al conectar con el servidor.",error);
+    }
   };
 
   return (
@@ -61,13 +106,13 @@ const Reservas = () => {
           {menu.map((item, index) => (
             <div className="col-6 col-md-4 col-xl-3" key={index}>
               <div className="card m-2">
-                <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagen}/>
+                <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagenPlato}/>
                 <div className="card-body">
                   <h1 className="card-title">{item.dia}</h1>
-                  <h4 className="card-title">{item.plato}</h4>
-                  <p className="card-text">{item.descripcion}</p>
-                  <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item.dia, "Reservar")}>Reservar</button>
-                  <button className="btn btn-danger w-100" onClick={() => abrirModal(item.dia, "Cancelar")}>Cancelar reserva</button>
+                  <h4 className="card-title">{item.nombrePlato}</h4>
+                  <p className="card-text">{item.descripcionPlato}</p>
+                  <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item.dia, "Reservar")} disabled={!isAuthenticated}>Reservar</button>
+                  <button className="btn btn-danger w-100" onClick={() => abrirModal(item.dia, "Cancelar")} disabled={!isAuthenticated}>Cancelar reserva</button>
                 </div>
               </div>
             </div>
@@ -90,7 +135,7 @@ const Reservas = () => {
                   <p>¿Deseas continuar?</p>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-primary" onClick={() => {confirmarCancelarReserva();}}>¡{accion}!</button>
+                  <button type="button" className="btn btn-primary" onClick={() => {confirmarCancelarReserva()}}>¡{accion}!</button>
                   <button type="button" className="btn btn-danger" onClick={() => setShowModal(false)}>Cancelar</button>
                 </div>
               </div>
