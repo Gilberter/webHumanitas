@@ -15,10 +15,10 @@ const Productos = () => {
   const categoriaFiltro = query.get("categoria");
 
   useEffect(() => {
-    fetch("/productosTest.json") // endpoint -------------------------------------------------------------------
+    fetch("http://localhost:8080/api/productos") // endpoint -------------------------------------------------------------------
       .then((res) => res.json())
       .then((data) => {
-        let lista = data.productos;
+        let lista = data;
 
         // Si hay filtro por categoría, aplicarlo
         if (categoriaFiltro) {

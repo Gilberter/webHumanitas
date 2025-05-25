@@ -34,6 +34,23 @@ public class MenuSemanalService {
         return menuSemanalRepository.save(menuItem);
     }
 
+    @Transactional
+    public void reiniciarMenuLaboral() {
+        List<MenuSemanal> menu = menuSemanalRepository.findByDiaIn(
+                List.of(DiaSemana.LUNES, DiaSemana.MARTES, DiaSemana.MIERCOLES, DiaSemana.JUEVES, DiaSemana.VIERNES)
+        );
+
+        for (MenuSemanal item : menu) {
+            item.setNombrePlato("");
+            item.setDescripcionPlato("");
+            item.setImagenPlato(null);
+            item.setDisponibilidadPlato(0);
+        }
+
+        menuSemanalRepository.saveAll(menu);
+    }
+
+
     // Obtener un ítem del menú por su ID
     @Transactional(readOnly = true)
     public Optional<MenuSemanal> obtenerItemMenuPorId(int id) {

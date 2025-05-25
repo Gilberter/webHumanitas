@@ -7,13 +7,14 @@ const Administracion = () => {
   const [nombrePlato, setNombrePlato] = useState("");
   const [descripcionPlato, setDescripcionPlato] = useState("");
   const [imagenPlato, setImagenPlato] = useState("");
+  const [disponibilidad, setDisponibilidad] = useState("");
 
     // Cargar reservas desde API json
       const [menu, setMenu] = useState([]);
       useEffect(() => {
-        fetch("/menuSemanalTest.json") // endpoint -------------------------------------------------------------------
+        fetch("http://localhost:8080/api/menu-semanal") // endpoint -------------------------------------------------------------------
           .then((res) => res.json())
-          .then((data) => setMenu(data.menu_semanal))
+          .then((data) => setMenu(data))
           .catch((err) => console.error("Error al cargar el menú:", err));
       }, []);
 
@@ -21,9 +22,10 @@ const Administracion = () => {
       const [showModalModificarDia, setShowModalModificarDia] = useState(false); 
         // Abre el modal y actualiza el día
         const abrirModal = (dia) => {
-          setNombrePlato(dia.plato);
-          setDescripcionPlato(dia.descripcion);
-          setImagenPlato(dia.imagen);
+          setNombrePlato(dia.nombrePlato);
+          setDescripcionPlato(dia.descripcionPlato);
+          setImagenPlato(dia.imagenPlato);
+          setDisponibilidad(dia.disponibilidadPlato);
 
           setDiaSeleccionado(dia);
           setShowModalModificarDia(true);
@@ -36,13 +38,15 @@ const Administracion = () => {
                 return;
           }
           const datosModificados = {
+            id: diaSeleccionado.id,
             dia: diaSeleccionado.dia,
             nombrePlato: nombrePlato,
             descripcionPlato: descripcionPlato,
-            imagenPlato: imagenPlato
+            imagenPlato: imagenPlato,
+            disponibilidadPlato: disponibilidad
           };
           try {
-            const response = await fetch(`/api/platosSemanales/${diaSeleccionado.id}`, { // ------------------------------------------------- API
+            const response = await fetch(`http://localhost:8080/api/menu-semanal/${diaSeleccionado.id}`, { // ------------------------------------------------- API
               method: "PUT", // o PATCH según cómo esté configurado tu backend
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(datosModificados)
@@ -100,8 +104,8 @@ const Administracion = () => {
             const confirmar = window.confirm("Esta acción eliminará el menú actual y creará uno nuevo");
             if (!confirmar) return;
             try {
-              const response = await fetch("/api/crearNuevoMenu", { // envío al back ----------------------------------------------
-                method: "POST", // o PUT si prefieres
+              const response = await fetch("http://localhost:8080/api/menu-semanal/reiniciar", { // envío al back ----------------------------------------------
+                method: "PUT", // o PUT si prefieres
                 headers: {
                   "Content-Type": "application/json",
                 }
@@ -149,8 +153,9 @@ const Administracion = () => {
                 <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagen}/>
                 <div className="card-body">
                   <h4 className="card-title">{item.dia}</h4>
-                  <h5 className="card-title">{item.plato}</h5>
-                  <p className="card-text">{item.descripcion}</p>
+                  <h5 className="card-title">{item.nombrePlato}</h5>
+                  <p className="card-text">{item.descripcionPlato}</p>
+                   <p className="card-text">Disponibilidad: {item.disponibilidadPlato}</p>
                   <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item)}>Modificar</button>
                 </div>
               </div>
@@ -180,6 +185,9 @@ const Administracion = () => {
 
                 <label className="form-label pt-4">Imágen de plato</label>
                 <input type="text" className="form-control" value={imagenPlato} onChange={(e) => setImagenPlato(e.target.value)} required/>
+
+                <label className="form-label pt-4">Disponibilidad</label>
+                <input type="number" className="form-control" value={disponibilidad} onChange={(e) => setDisponibilidad(e.target.value)} required/>
 
                 </div>
                 <div className="modal-footer">

@@ -14,9 +14,9 @@ const AdministrarProductos = () => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    fetch("/productosTest.json")
+    fetch("http://localhost:8080/api/productos")
       .then((res) => res.json())
-      .then((data) => setProductos(data.productos))
+      .then((data) => setProductos(data))
       .catch((err) => console.error("Error al cargar productos:", err));
   }, []);
 
@@ -39,7 +39,7 @@ const AdministrarProductos = () => {
     const confirmar = window.confirm(`¿Estás seguro de eliminar el producto "${p.nombre}"?`);
     if (!confirmar) return;
     try {
-      const response = await fetch(`/api/productos/${p.id}`, { // ---------------------------------------------- API
+      const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, { // ---------------------------------------------- API
         method: "DELETE"
       });
       if (response.ok) {
@@ -63,14 +63,13 @@ const AdministrarProductos = () => {
       return;
     }
     const productoModificado = {
-      id: p.id,
       nombre: nombreTemp,
       categoria: categoriaTemp,
       precio: parseFloat(precioTemp),
       imagen: imgTemp
     };
     try {
-      const response = await fetch(`/api/productos/${id}`, { // --------------------------------------------------- API
+      const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, { // --------------------------------------------------- API
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(productoModificado)
@@ -105,7 +104,7 @@ const AdministrarProductos = () => {
       imagen: imgTemp
     };
     try {
-      const response = await fetch("/api/productos", { // ------------------------------------------------- API
+      const response = await fetch("http://localhost:8080/api/productos", { // ------------------------------------------------- API
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(nuevoProducto)
@@ -149,13 +148,15 @@ const AdministrarProductos = () => {
               />
             </div>
             <div className="col">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Categoría"
+              <select className="form-select"
                 onChange={(e) => setCategoriaTemp(e.target.value)}
                 required
-              />
+              >
+                <option value="" disabled selected>Selecciona categoría</option>
+                <option value="COMIDA">COMIDA</option>
+                <option value="BEBIDA">BEBIDA</option>
+              </select>
+
             </div>
             <div className="col">
               <input
