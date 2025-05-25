@@ -3,12 +3,15 @@ import Header from "../../../componentes/Header/header.jsx";
 import Footer from "../../../componentes/Footer/footer.jsx";
 
 const AdministrarProductos = () => {
+
+  const [nombreTemp, setNombreTemp] = useState("");
+  const [categoriaTemp, setCategoriaTemp] = useState("");
+  const [precioTemp, setPrecioTemp] = useState("");
+  const [imgTemp, setImgTemp] = useState("");
+
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
   const [productos, setProductos] = useState([]);
-  const [nuevoProducto, setNuevoProducto] = useState({
-    nombre: "",
-    categoria: "",
-    precio: ""
-  });
 
   useEffect(() => {
     fetch("/productosTest.json")
@@ -17,32 +20,116 @@ const AdministrarProductos = () => {
       .catch((err) => console.error("Error al cargar productos:", err));
   }, []);
 
-  const handleEliminar = (id) => {
-    setProductos(productos.filter((p) => p.id !== id));
+
+  const [showModalModificarProducto, setShowModalModificarProducto] = useState(false); 
+  // Abre el modal
+  const abrirModal = (p) => {
+            setNombreTemp(p.nombre);
+            setCategoriaTemp(p.categoria);
+            setPrecioTemp(p.precio);
+            setImgTemp(p.imagen);
+
+            setProductoSeleccionado(p);
+            setShowModalModificarProducto(true);
   };
 
-  const handleModificar = (id) => {
-    const nuevoNombre = prompt("Nuevo nombre del producto:");
-    if (nuevoNombre) {
-      setProductos(
-        productos.map((p) =>
-          p.id === id ? { ...p, nombre: nuevoNombre } : p
-        )
-      );
+
+  // Eliminar un producto
+  const handleEliminar = async (p) => {
+    const confirmar = window.confirm(`¿Estás seguro de eliminar el producto "${p.nombre}"?`);
+    if (!confirmar) return;
+    try {
+      const response = await fetch(`/api/productos/${p.id}`, { // ---------------------------------------------- API
+        method: "DELETE"
+      });
+      if (response.ok) {
+        alert(`Producto "${p.nombre}" eliminado correctamente.`);
+        window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+      } else {
+        console.error("Error al eliminar producto");
+        alert("No se pudo eliminar el producto.");
+      }
+    } catch (error) {
+      console.error("Error de conexión:", error);
+      alert("Error de conexión con el servidor.");
     }
   };
 
-  const handleAñadir = (e) => {
-    e.preventDefault();
-    const nuevo = {
-      id: Date.now(), // id temporal
-      nombre: nuevoProducto.nombre,
-      categoria: nuevoProducto.categoria,
-      precio: parseFloat(nuevoProducto.precio)
+
+  // Modificar Poducto
+  const handleModificar = async (p) => {
+    if (nombreTemp === "" || categoriaTemp ==="" || precioTemp === "" || imgTemp === "") {
+      alert(`¡Algunos campos están vacíos!`);
+      return;
+    }
+    const productoModificado = {
+      id: p.id,
+      nombre: nombreTemp,
+      categoria: categoriaTemp,
+      precio: parseFloat(precioTemp),
+      imagen: imgTemp
     };
-    setProductos([...productos, nuevo]);
-    setNuevoProducto({ nombre: "", categoria: "", precio: "" });
+    try {
+      const response = await fetch(`/api/productos/${id}`, { // --------------------------------------------------- API
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(productoModificado)
+      });
+      if (response.ok) {
+        alert("Producto modificado correctamente.");
+        setShowModalModificarProducto(false);
+        //limpiar campos
+        setNombreTemp("");
+        setCategoriaTemp("");
+        setPrecioTemp("");
+        setImgTemp("");
+        // ---------------------------
+        window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+      } else {
+        console.error("Error al modificar el producto");
+        alert("Error al modificar el producto.");
+      }
+    } catch (error) {
+      console.error("Error de conexión:", error);
+      alert("No se pudo conectar con el servidor.");
+    }
   };
+
+// Añadir productos
+  const handleAñadir = async (e) => {
+    e.preventDefault();
+    const nuevoProducto = {
+      nombre: nombreTemp,
+      categoria: categoriaTemp,
+      precio: parseFloat(precioTemp),
+      imagen: imgTemp
+    };
+    try {
+      const response = await fetch("/api/productos", { // ------------------------------------------------- API
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(nuevoProducto)
+      });
+      if (response.ok) {
+        alert("Producto añadido correctamente.");
+        e.target.reset(); // limpiar el form
+        //limpiar campos
+        setNombreTemp("");
+        setCategoriaTemp("");
+        setPrecioTemp("");
+        setImgTemp("");
+        // ---------------------------
+        window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+      } else {
+        console.error("Error al añadir producto");
+        alert("Hubo un error al añadir el producto.");
+      }
+    } catch (error) {
+      console.error("Error de conexión:", error);
+      alert("No se pudo conectar con el servidor.");
+    }
+  };
+
 
   return (
     <>
@@ -57,10 +144,7 @@ const AdministrarProductos = () => {
                 type="text"
                 className="form-control"
                 placeholder="Nombre"
-                value={nuevoProducto.nombre}
-                onChange={(e) =>
-                  setNuevoProducto({ ...nuevoProducto, nombre: e.target.value })
-                }
+                onChange={(e) => setNombreTemp(e.target.value)}
                 required
               />
             </div>
@@ -69,10 +153,7 @@ const AdministrarProductos = () => {
                 type="text"
                 className="form-control"
                 placeholder="Categoría"
-                value={nuevoProducto.categoria}
-                onChange={(e) =>
-                  setNuevoProducto({ ...nuevoProducto, categoria: e.target.value })
-                }
+                onChange={(e) => setCategoriaTemp(e.target.value)}
                 required
               />
             </div>
@@ -82,10 +163,16 @@ const AdministrarProductos = () => {
                 step="0.01"
                 className="form-control"
                 placeholder="Precio"
-                value={nuevoProducto.precio}
-                onChange={(e) =>
-                  setNuevoProducto({ ...nuevoProducto, precio: e.target.value })
-                }
+                onChange={(e) => setPrecioTemp(e.target.value)}
+                required
+              />
+            </div>
+            <div className="col">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="URL"
+                onChange={(e) => setImgTemp(e.target.value)}
                 required
               />
             </div>
@@ -101,6 +188,7 @@ const AdministrarProductos = () => {
               <th>Nombre</th>
               <th>Categoría</th>
               <th>Precio</th>
+              <th>Imágen</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -110,16 +198,17 @@ const AdministrarProductos = () => {
                 <td>{p.nombre}</td>
                 <td>{p.categoria}</td>
                 <td>${p.precio}</td>
+                <td><img className="img-fluid rounded" alt={`producto: ${p.nombre}`} src={p.imagen} width={"100px"}/></td>
                 <td>
                   <button
                     className="btn btn-primary btn-sm me-2"
-                    onClick={() => handleModificar(p.id)}
+                    onClick={() => abrirModal(p)}
                   >
                     Modificar
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleEliminar(p.id)}
+                    onClick={() => handleEliminar(p)}
                   >
                     Eliminar
                   </button>
@@ -128,6 +217,43 @@ const AdministrarProductos = () => {
             ))}
           </tbody>
         </table>
+
+
+
+        {/* Modal */}
+        {showModalModificarProducto && (
+            <>
+              <div className="modal d-block show" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Modificar producto{" "}<strong>{nombreTemp}</strong></h5>
+                      <button type="button" className="btn-close" onClick={() => setShowModalModificarProducto(false)}></button>
+                    </div>
+                    <div className="modal-body text-center">
+                    
+                    <label className="form-label">Nombre</label>
+                    <input type="text" className="form-control" value={nombreTemp} onChange={(e) => setNombreTemp(e.target.value)} required/>
+
+                    <label className="form-label pt-4">Categoría</label>
+                    <input type="text" className="form-control" value={categoriaTemp} onChange={(e) => setCategoriaTemp(e.target.value)} required/>
+
+                    <label className="form-label pt-4">Precio</label>
+                    <input type="number" className="form-control" value={precioTemp} onChange={(e) => setPrecioTemp(e.target.value)} required/>
+
+                    <label className="form-label pt-4">Imágen del producto (URL)</label>
+                    <input type="text" className="form-control" value={imgTemp} onChange={(e) => setImgTemp(e.target.value)} required accept=".png, .jpg, .jpeg"/>
+
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-primary" onClick={() => handleModificar(productoSeleccionado)}>¡Modificar!</button>
+                      <button type="button" className="btn btn-danger" onClick={() => setShowModalModificarProducto(false)}>Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
       </div>
       <Footer />
     </>

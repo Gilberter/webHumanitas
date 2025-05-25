@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../../componentes/Header/header.jsx";
 import Footer from "../../componentes/Footer/footer.jsx";
 
-import { Link } from "react-router-dom";
-
-
 const Administracion = () => {
+
+  const [nombrePlato, setNombrePlato] = useState("");
+  const [descripcionPlato, setDescripcionPlato] = useState("");
+  const [imagenPlato, setImagenPlato] = useState("");
 
     // Cargar reservas desde API json
       const [menu, setMenu] = useState([]);
@@ -16,47 +17,49 @@ const Administracion = () => {
           .catch((err) => console.error("Error al cargar el menú:", err));
       }, []);
 
-      const [diaSeleccionado, setDiaSeleccionado] = useState("");
+      const [diaSeleccionado, setDiaSeleccionado] = useState(null);
       const [showModalModificarDia, setShowModalModificarDia] = useState(false); 
         // Abre el modal y actualiza el día
         const abrirModal = (dia) => {
+          setNombrePlato(dia.plato);
+          setDescripcionPlato(dia.descripcion);
+          setImagenPlato(dia.imagen);
+
           setDiaSeleccionado(dia);
           setShowModalModificarDia(true);
         };
 
-        const [nombrePlato, setNombrePlato] = useState("");
-        const [descripcionPlato, setDescripcionPlato] = useState("");
-        const [imagenPlato, setImagenPlato] = useState(null);
         // modificar día
         const modificarDia = async () => {
-
-            if (nombrePlato == "" || descripcionPlato=="" || imagenPlato==null) {
+          if (nombrePlato === "" || descripcionPlato ==="" || imagenPlato === "") {
                 alert(`¡Algunos campos están vacíos!`);
-            }else{
-                const formData = new FormData();
-                formData.append("dia", diaSeleccionado);
-                formData.append("plato", nombrePlato);
-                formData.append("descripcion", descripcionPlato);
-                formData.append("imagen", imagenPlato);
-            
-                try {
-                const response = await fetch("/api/modificar-menu", { // Solicitud al back -------------------------------------------------
-                    method: "POST",
-                    body: formData,
-                });
-            
-                if (response.ok) {
-                    alert(`¡Información modificada con éxito para el día ${diaSeleccionado}!`);
-                    setShowModalModificarDia(false);
-                } else {
-                    alert(`¡Error al modificar el día ${diaSeleccionado}!`);
-                }
-                } catch (error) {
-                    alert("Error al conectar con el servidor:", error);
-                }
-            }
+                return;
+          }
+          const datosModificados = {
+            dia: diaSeleccionado.dia,
+            nombrePlato: nombrePlato,
+            descripcionPlato: descripcionPlato,
+            imagenPlato: imagenPlato
           };
-        
+          try {
+            const response = await fetch(`/api/platosSemanales/${diaSeleccionado.id}`, { // ------------------------------------------------- API
+              method: "PUT", // o PATCH según cómo esté configurado tu backend
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(datosModificados)
+            });
+            if (response.ok) {
+              alert("Día modificado correctamente.");
+              setShowModalModificarDia(false);
+              window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+            } else {
+              console.error("Error al modificar día");
+              alert("Hubo un error al modificar la información del día.");
+            }
+          } catch (error) {
+            console.error("Error de conexión:", error);
+            alert("No se pudo conectar con el servidor.");
+          }
+        };       
         
 
         // Hora límite
@@ -77,9 +80,9 @@ const Administracion = () => {
                 },
                 body: JSON.stringify({ horaLimite }),
               });
-          
               if (response.ok) {
                 alert(`¡Hora límite actualizada a ${horaLimite}!`);
+                window.location.reload(); // Recargar paǵina para ver reflejados los cambios
               } else {
                 console.error("Error en la actualización");
                 alert("Ocurrió un error al actualizar la hora.");
@@ -96,7 +99,6 @@ const Administracion = () => {
           const crearNuevoMenu = async () => {
             const confirmar = window.confirm("Esta acción eliminará el menú actual y creará uno nuevo");
             if (!confirmar) return;
-
             try {
               const response = await fetch("/api/crearNuevoMenu", { // envío al back ----------------------------------------------
                 method: "POST", // o PUT si prefieres
@@ -104,9 +106,9 @@ const Administracion = () => {
                   "Content-Type": "application/json",
                 }
               });
-          
               if (response.ok) {
                 alert(`¡Nuevo menú ha sido creado a ${horaLimite}!`);
+                window.location.reload(); // Recargar paǵina para ver reflejados los cambios
               } else {
                 console.error("Error al crear menú");
                 alert("Error al crear menú");
@@ -149,7 +151,7 @@ const Administracion = () => {
                   <h4 className="card-title">{item.dia}</h4>
                   <h5 className="card-title">{item.plato}</h5>
                   <p className="card-text">{item.descripcion}</p>
-                  <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item.dia)}>Modificar</button>
+                  <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item)}>Modificar</button>
                 </div>
               </div>
             </div>
@@ -165,7 +167,7 @@ const Administracion = () => {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">Modificar información día{" "}<strong>{diaSeleccionado}</strong></h5>
+                  <h5 className="modal-title">Modificar información día{" "}<strong>{diaSeleccionado.dia}</strong></h5>
                   <button type="button" className="btn-close" onClick={() => setShowModalModificarDia(false)}></button>
                 </div>
                 <div className="modal-body text-center">
@@ -177,7 +179,7 @@ const Administracion = () => {
                 <textarea type="text" className="form-control" value={descripcionPlato} onChange={(e) => setDescripcionPlato(e.target.value)} required/>
 
                 <label className="form-label pt-4">Imágen de plato</label>
-                <input type="file" className="form-control" ivalue={imagenPlato} onChange={(e) => setImagenPlato(e.target.files[0])} required accept=".png, .jpg, .jpeg"/>
+                <input type="text" className="form-control" value={imagenPlato} onChange={(e) => setImagenPlato(e.target.value)} required/>
 
                 </div>
                 <div className="modal-footer">
