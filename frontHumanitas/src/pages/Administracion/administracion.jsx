@@ -26,7 +26,6 @@ const Administracion = () => {
           setDescripcionPlato(dia.descripcionPlato);
           setImagenPlato(dia.imagenPlato);
           setDisponibilidad(dia.disponibilidadPlato);
-
           setDiaSeleccionado(dia);
           setShowModalModificarDia(true);
         };
@@ -150,7 +149,7 @@ const Administracion = () => {
           {menu.map((item, index) => (
             <div className="col-6 col-md-4 col-xl-2" key={index}>
               <div className="card m-2">
-                <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagen}/>
+                <img className="img-fluid rounded" alt={`Imagen del día ${item.dia}`} src={item.imagenPlato}/>
                 <div className="card-body">
                   <h4 className="card-title">{item.dia}</h4>
                   <h5 className="card-title">{item.nombrePlato}</h5>

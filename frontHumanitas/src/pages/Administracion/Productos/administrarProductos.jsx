@@ -8,9 +8,7 @@ const AdministrarProductos = () => {
   const [categoriaTemp, setCategoriaTemp] = useState("");
   const [precioTemp, setPrecioTemp] = useState("");
   const [imgTemp, setImgTemp] = useState("");
-
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
@@ -19,6 +17,8 @@ const AdministrarProductos = () => {
       .then((data) => setProductos(data))
       .catch((err) => console.error("Error al cargar productos:", err));
   }, []);
+
+  console.log("Productos:", productos);
 
 
   const [showModalModificarProducto, setShowModalModificarProducto] = useState(false); 
@@ -63,10 +63,11 @@ const AdministrarProductos = () => {
       return;
     }
     const productoModificado = {
-      nombre: nombreTemp,
       categoria: categoriaTemp,
+      imagen: imgTemp,
+      nombre: nombreTemp,
       precio: parseFloat(precioTemp),
-      imagen: imgTemp
+      
     };
     try {
       const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, { // --------------------------------------------------- API
@@ -98,11 +99,13 @@ const AdministrarProductos = () => {
   const handleAñadir = async (e) => {
     e.preventDefault();
     const nuevoProducto = {
-      nombre: nombreTemp,
       categoria: categoriaTemp,
+      imagen: imgTemp,
+      nombre: nombreTemp,
       precio: parseFloat(precioTemp),
-      imagen: imgTemp
+      
     };
+    console.log("Nuevo producto a añadir:", nuevoProducto);
     try {
       const response = await fetch("http://localhost:8080/api/productos", { // ------------------------------------------------- API
         method: "POST",
