@@ -27,6 +27,9 @@ public class MenuSemanal {
     @Column(nullable = false)
     private int disponibilidadPlato; // Cantidad disponible de este plato para ese día
 
+    @Column(nullable = false)
+    private double precio; // Nuevo campo para el precio
+
 
     // Por ahora, omitiré un campo directo de tipo 'Reserva'
 
@@ -34,12 +37,13 @@ public class MenuSemanal {
     public MenuSemanal() {
     }
 
-    public MenuSemanal(DiaSemana dia, String nombrePlato, String descripcionPlato, String imagenPlato, int disponibilidadPlato) {
+    public MenuSemanal(DiaSemana dia, String nombrePlato, String descripcionPlato, String imagenPlato, int disponibilidadPlato, double precio) {
         this.dia = dia;
         this.nombrePlato = nombrePlato;
         this.descripcionPlato = descripcionPlato;
         this.imagenPlato = imagenPlato;
         this.disponibilidadPlato = disponibilidadPlato;
+        this.precio = precio;
     }
 
     // Getters y Setters
@@ -91,6 +95,14 @@ public class MenuSemanal {
         this.disponibilidadPlato = disponibilidadPlato;
     }
 
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
     @Override
     public String toString() {
         return "MenuSemanal{" +
@@ -100,6 +112,7 @@ public class MenuSemanal {
                 ", descripcionPlato='" + descripcionPlato + '\'' +
                 ", imagenPlato='" + imagenPlato + '\'' +
                 ", disponibilidadPlato=" + disponibilidadPlato +
+                ", precio=" + precio +
                 '}';
     }
 }

@@ -2,5 +2,6 @@ package com.humanitas.backend.entity;
 
 public enum EstadoReserva {
     CONFIRMADO,
-    CANCELADO
+    CANCELADO,
+    MULTADO
 }

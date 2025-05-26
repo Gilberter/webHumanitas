@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus; // Importante para respuestas más e
 import org.springframework.http.ResponseEntity; // Para un mejor control de la respuesta HTTP
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public class UsuarioController {
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioService.obtenerTodosLosUsuarios();
     }
+
+
     @GetMapping("/login")
     public ResponseEntity<Usuario> loginUsuario(
             @RequestParam String correo,

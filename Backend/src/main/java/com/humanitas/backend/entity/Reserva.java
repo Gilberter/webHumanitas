@@ -2,6 +2,8 @@ package com.humanitas.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate; // Cambiado de LocalDateTime a LocalDate
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name = "reservas")
@@ -13,11 +15,8 @@ public class Reserva {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Usuario usuario;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "producto_id", nullable = false)
-    private Inventario productoReservado;
 
     @Column(name = "fecha_reserva", nullable = false)
     private LocalDate fechaReserva; // Cambiado a LocalDate para formato año/mes/día
@@ -26,13 +25,19 @@ public class Reserva {
     @Column(nullable = false)
     private EstadoReserva estado; // Nuevo campo para el estado
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_semanal_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private MenuSemanal menuSemanal;
+
+
     // Constructores
     public Reserva() {
     }
 
-    public Reserva(Usuario usuario, Inventario productoReservado, LocalDate fechaReserva, EstadoReserva estado) {
+    public Reserva(Usuario usuario, MenuSemanal menuSemanal, LocalDate fechaReserva, EstadoReserva estado) {
         this.usuario = usuario;
-        this.productoReservado = productoReservado;
+        this.menuSemanal = menuSemanal;
         this.fechaReserva = fechaReserva;
         this.estado = estado;
     }
@@ -55,13 +60,7 @@ public class Reserva {
         this.usuario = usuario;
     }
 
-    public Inventario getProductoReservado() {
-        return productoReservado;
-    }
 
-    public void setProductoReservado(Inventario productoReservado) {
-        this.productoReservado = productoReservado;
-    }
 
     public LocalDate getFechaReserva() {
         return fechaReserva;
@@ -79,4 +78,11 @@ public class Reserva {
         this.estado = estado;
     }
 
+     public MenuSemanal getMenuSemanal() {
+        return menuSemanal;
+    }
+
+    public void setMenuSemanal(MenuSemanal menuSemanal) {
+        this.menuSemanal = menuSemanal;
+    }
 }

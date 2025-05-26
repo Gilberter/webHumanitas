@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> { // Cambiado Integer a Long
 
+    // Método para buscar un usuario por su ID
+    Optional<Usuario> findById(Long id); // Cambiado Integer a Long
     // Método para buscar un usuario por su correo
     Optional<Usuario> findByCorreo(String correo);
 

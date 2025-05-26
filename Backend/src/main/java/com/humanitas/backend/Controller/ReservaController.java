@@ -48,13 +48,16 @@ public class ReservaController {
     // --- Nuevos Endpoints de ejemplo ---
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Reserva>> obtenerReservasPorUsuarioId(@PathVariable Long usuarioId) {
-        // Asumiendo que el id de Usuario es Long
-        List<Reserva> reservas = reservaService.obtenerReservasPorUsuarioId(usuarioId);
-        if (reservas.isEmpty()) {
-            return ResponseEntity.noContent().build(); // O notFound() si se prefiere
+    public ResponseEntity<?> obtenerReservasPorUsuarioId(@PathVariable Long usuarioId) {
+        try {
+            List<Reserva> reservas = reservaService.obtenerReservasPorUsuarioId(usuarioId);
+            if (reservas.isEmpty()) {
+                throw new RuntimeException("No se encontraron reservas para el usuario con ID: " + usuarioId);
+            }
+            return ResponseEntity.ok(reservas);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/fecha")
