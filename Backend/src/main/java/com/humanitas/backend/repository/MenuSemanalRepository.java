@@ -25,4 +25,6 @@ public interface MenuSemanalRepository extends JpaRepository<MenuSemanal, Intege
     // Buscar platos disponibles (con disponibilidadPlato > 0)
     List<MenuSemanal> findByDisponibilidadPlatoGreaterThan(int cantidad);
 
+    List<MenuSemanal> findByDiaIn(List<DiaSemana> dias);
+
 }

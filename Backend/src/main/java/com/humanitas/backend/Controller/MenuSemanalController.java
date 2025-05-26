@@ -104,4 +104,16 @@ public class MenuSemanalController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // TODO: Asegurar con Spring Security - @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/reiniciar")
+    public ResponseEntity<?> reiniciarMenuLaboral() {
+        try {
+            menuSemanalService.reiniciarMenuLaboral();
+            return ResponseEntity.ok("Menú semanal laboral reiniciado correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reiniciar el menú.");
+        }
+    }
+
 }
