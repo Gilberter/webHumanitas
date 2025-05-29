@@ -35,19 +35,25 @@ public class MenuSemanalService {
     }
 
     @Transactional
-    public void reiniciarMenuLaboral() {
+    public void reiniciarMenuLaboral(String horaLimiteCancelacion) {
+        // Borra los menús laborales existentes
         List<MenuSemanal> menu = menuSemanalRepository.findByDiaIn(
                 List.of(DiaSemana.LUNES, DiaSemana.MARTES, DiaSemana.MIERCOLES, DiaSemana.JUEVES, DiaSemana.VIERNES)
         );
+        menuSemanalRepository.deleteAll(menu);
 
-        for (MenuSemanal item : menu) {
-            item.setNombrePlato("");
-            item.setDescripcionPlato("");
-            item.setImagenPlato(null);
-            item.setDisponibilidadPlato(0);
+        // Agrega los menús laborales con valores por defecto
+        for (DiaSemana dia : List.of(DiaSemana.LUNES, DiaSemana.MARTES, DiaSemana.MIERCOLES, DiaSemana.JUEVES, DiaSemana.VIERNES)) {
+            MenuSemanal nuevo = new MenuSemanal();
+            nuevo.setDia(dia);
+            nuevo.setNombrePlato(""); // o "Sin definir"
+            nuevo.setDescripcionPlato("");
+            nuevo.setImagenPlato(null);
+            nuevo.setDisponibilidadPlato(0);
+            nuevo.setPrecio(0.0);
+            nuevo.setHoraLimiteCancelacion(horaLimiteCancelacion);
+            menuSemanalRepository.save(nuevo);
         }
-
-        menuSemanalRepository.saveAll(menu);
     }
 
 
@@ -108,6 +114,9 @@ public class MenuSemanalService {
         itemExistente.setDescripcionPlato(menuActualizado.getDescripcionPlato());
         itemExistente.setImagenPlato(menuActualizado.getImagenPlato());
         itemExistente.setDisponibilidadPlato(menuActualizado.getDisponibilidadPlato());
+        itemExistente.setPrecio(menuActualizado.getPrecio());
+        itemExistente.setHoraLimiteCancelacion(menuActualizado.getHoraLimiteCancelacion());
+
 
         return menuSemanalRepository.save(itemExistente);
     }

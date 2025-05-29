@@ -30,6 +30,9 @@ public class MenuSemanal {
     @Column(nullable = false)
     private double precio; // Nuevo campo para el precio
 
+    @Column(name = "hora_limite_cancelacion")
+    private String horaLimiteCancelacion;
+
 
     // Por ahora, omitiré un campo directo de tipo 'Reserva'
 
@@ -37,13 +40,14 @@ public class MenuSemanal {
     public MenuSemanal() {
     }
 
-    public MenuSemanal(DiaSemana dia, String nombrePlato, String descripcionPlato, String imagenPlato, int disponibilidadPlato, double precio) {
+    public MenuSemanal(DiaSemana dia, String nombrePlato, String descripcionPlato, String imagenPlato, int disponibilidadPlato, double precio, String horaLimiteCancelacion) {
         this.dia = dia;
         this.nombrePlato = nombrePlato;
         this.descripcionPlato = descripcionPlato;
         this.imagenPlato = imagenPlato;
         this.disponibilidadPlato = disponibilidadPlato;
         this.precio = precio;
+        this.horaLimiteCancelacion = horaLimiteCancelacion;
     }
 
     // Getters y Setters
@@ -102,6 +106,12 @@ public class MenuSemanal {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+    public String getHoraLimiteCancelacion() {
+    return horaLimiteCancelacion;
+    }
+    public void setHoraLimiteCancelacion(String horaLimiteCancelacion) {
+        this.horaLimiteCancelacion = horaLimiteCancelacion;
+    }
 
     @Override
     public String toString() {
@@ -112,7 +122,8 @@ public class MenuSemanal {
                 ", descripcionPlato='" + descripcionPlato + '\'' +
                 ", imagenPlato='" + imagenPlato + '\'' +
                 ", disponibilidadPlato=" + disponibilidadPlato +
-                ", precio=" + precio +
+                ", precio=" + precio + 
+                ", horaLimiteCancelacion='" + horaLimiteCancelacion + '\'' +
                 '}';
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/menu-semanal")
@@ -107,9 +108,10 @@ public class MenuSemanalController {
 
     // TODO: Asegurar con Spring Security - @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/reiniciar")
-    public ResponseEntity<?> reiniciarMenuLaboral() {
+    public ResponseEntity<?> reiniciarMenuLaboral(@RequestBody Map<String, String> body) {
         try {
-            menuSemanalService.reiniciarMenuLaboral();
+            String horaLimiteCancelacion = body.get("horaLimiteCancelacion");
+            menuSemanalService.reiniciarMenuLaboral(horaLimiteCancelacion);
             return ResponseEntity.ok("Menú semanal laboral reiniciado correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reiniciar el menú.");
