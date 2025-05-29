@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../componentes/Header/header.jsx";
 import Footer from "../../componentes/Footer/footer.jsx";
+import { useAuth } from "../../context/AuthContext";
 
 const Administracion = () => {
+
+  // Si el usuario esta logeado
+  const { user, isAuthenticated } = useAuth();
 
   const [nombrePlato, setNombrePlato] = useState("");
   const [descripcionPlato, setDescripcionPlato] = useState("");
@@ -29,75 +33,107 @@ const Administracion = () => {
           setDisponibilidad(dia.disponibilidadPlato);
           setDiaSeleccionado(dia);
           setShowModalModificarDia(true);
-          setHoraLimiteCancelacion(dia.horaLimiteCancelacion);
+          if (dia.horaLimiteCancelacion) {
+            setHoraLimiteCancelacion(dia.horaLimiteCancelacion);
+          }
         };
 
-      // modificar día
-      const modificarDia = async () => {
-        if (nombrePlato === "" || descripcionPlato ==="" || imagenPlato === "") {
-              alert(`¡Algunos campos están vacíos!`);
-              return;
-        }
-        const datosModificados = {
-          id: diaSeleccionado.id,
-          dia: diaSeleccionado.dia,
-          nombrePlato: nombrePlato,
-          descripcionPlato: descripcionPlato,
-          imagenPlato: imagenPlato,
-          disponibilidadPlato: disponibilidad,
-          horaLimiteCancelacion: horaLimiteCancelacion 
-
+        // modificar día
+        const modificarDia = async () => {
+          if (nombrePlato === "" || descripcionPlato ==="" || imagenPlato === "") {
+                alert(`¡Algunos campos están vacíos!`);
+                return;
+          }
+          const datosModificados = {
+            id: diaSeleccionado.id,
+            dia: diaSeleccionado.dia,
+            nombrePlato: nombrePlato,
+            descripcionPlato: descripcionPlato,
+            imagenPlato: imagenPlato,
+            disponibilidadPlato: disponibilidad,
+            horaLimiteCancelacion: horaLimiteCancelacion
+          };
+          try {
+            const response = await fetch(`http://localhost:8080/api/menu-semanal/${diaSeleccionado.id}?idUsuario=${user.id}`, { // ------------------------------------------------- API
+              method: "PUT", // o PATCH según cómo esté configurado tu backend
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(datosModificados)
+            });
+            if (response.ok) {
+              alert("Día modificado correctamente.");
+              setShowModalModificarDia(false);
+              window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+            } else {
+              console.error("Error al modificar día");
+              alert("Hubo un error al modificar la información del día.");
+            }
+          } catch (error) {
+            console.error("Error de conexión:", error);
+            alert("No se pudo conectar con el servidor.");
+          }
         };
-        try {
-          const response = await fetch(`http://localhost:8080/api/menu-semanal/${diaSeleccionado.id}`, { // ------------------------------------------------- API
-            method: "PUT", // o PATCH según cómo esté configurado tu backend
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(datosModificados)
-          });
-          if (response.ok) {
-            alert("Día modificado correctamente.");
-            setShowModalModificarDia(false);
-            window.location.reload(); // Recargar paǵina para ver reflejados los cambios
-          } else {
-            console.error("Error al modificar día");
-            alert("Hubo un error al modificar la información del día.");
-          }
-        } catch (error) {
-          console.error("Error de conexión:", error);
-          alert("No se pudo conectar con el servidor.");
-        }
-      };
+        
 
-      const modificarHoraLímite = async () => {
-        alert(`¡Hora límite de cancelación modificada a ${horaLimiteCancelacion}!`);
-      };
+        // Hora límite
+        const [horaLimite, setHoraLimite] = useState(null);
+        useEffect(() => {
+            fetch("/horaLimite.txt") // endpoint -------------------------------------------------------------------
+              .then((res) => res.text())
+              .then((data) => setHoraLimite(data))
+              .catch((err) => console.error("Error al cargar la hora:", err));
+          }, []);
+        // Modificar Hora límite - versión completa del primer código
+          const modificarHoraLímiteCompleta = async () => {
+            try {
+              const response = await fetch("/api/hora-limite", { // envío al back ----------------------------------------------
+                method: "POST", // o PUT si prefieres
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ horaLimite }),
+              });
+              if (response.ok) {
+                alert(`¡Hora límite actualizada a ${horaLimite}!`);
+                window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+              } else {
+                console.error("Error en la actualización");
+                alert("Ocurrió un error al actualizar la hora.");
+              }
+            } catch (err) {
+              console.error("Error de conexión:", err);
+              alert("No se pudo conectar con el servidor.");
+            }
+          };
 
+        // Modificar Hora límite - versión simple del segundo código
+        const modificarHoraLímite = async () => {
+          alert(`¡Hora límite de cancelación modificada a ${horaLimiteCancelacion}!`);
+        };
 
-
-      // Crear nuevo menú
-      const crearNuevoMenu = async () => {
-        const confirmar = window.confirm("Esta acción eliminará el menú actual y creará uno nuevo");
-        if (!confirmar) return;
-        try {
-          const response = await fetch("http://localhost:8080/api/menu-semanal/reiniciar", { // envío al back ----------------------------------------------
-            method: "PUT", // o PUT si prefieres
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ horaLimiteCancelacion }) // ENVÍA la hora seleccionada
-          });
-          if (response.ok) {
-            alert(`¡Nuevo menú ha sido creado a ${horaLimiteCancelacion}!`);
-            window.location.reload(); // Recargar paǵina para ver reflejados los cambios
-          } else {
-            console.error("Error al crear menú");
-            alert("Error al crear menú");
-          }
-        } catch (err) {
-          console.error("Error de conexión:", err);
-          alert("No se pudo conectar con el servidor.");
-        }
-      };
+          // Crear nuevo menú
+          const crearNuevoMenu = async () => {
+            const confirmar = window.confirm("Esta acción eliminará el menú actual y creará uno nuevo");
+            if (!confirmar) return;
+            try {
+              const response = await fetch(`http://localhost:8080/api/menu-semanal/reiniciar?idUsuario=${user.id}`, { // envío al back ----------------------------------------------
+                method: "PUT", // o PUT si prefieres
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ horaLimiteCancelacion }) // ENVÍA la hora seleccionada
+              });
+              if (response.ok) {
+                alert(`¡Nuevo menú ha sido creado a ${horaLimiteCancelacion}!`);
+                window.location.reload(); // Recargar paǵina para ver reflejados los cambios
+              } else {
+                console.error("Error al crear menú");
+                alert("Error al crear menú");
+              }
+            } catch (err) {
+              console.error("Error de conexión:", err);
+              alert("No se pudo conectar con el servidor.");
+            }
+          };
 
           
   return (
@@ -110,8 +146,13 @@ const Administracion = () => {
         <div className="row justify-content-center gx-0 mb-4">
           <div className="col-6">
             <h4 className="card-title">Hora límite cancelación</h4>
+            {/* Input del primer código que carga desde archivo */}
+            <input type="time" defaultValue="02:25" value={horaLimite} onChange={(e) => setHoraLimite(e.target.value)}/>
+            <button className="btn btn-primary mb-2" onClick={() => modificarHoraLímiteCompleta()}>Modificar (Completa)</button>
+            
+            {/* Input del segundo código que usa estado local */}
             <input type="time" value={horaLimiteCancelacion} onChange={e => setHoraLimiteCancelacion(e.target.value)}/>
-            <button className="btn btn-primary mb-2" onClick={modificarHoraLímite}>Modificar</button>
+            <button className="btn btn-primary mb-2" onClick={modificarHoraLímite}>Modificar (Simple)</button>
           </div>
 
           <div className="col-6">

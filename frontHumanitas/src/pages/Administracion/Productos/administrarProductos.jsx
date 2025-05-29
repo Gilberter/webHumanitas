@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../componentes/Header/header.jsx";
 import Footer from "../../../componentes/Footer/footer.jsx";
+import { useAuth } from "../../../context/AuthContext";
 
 const AdministrarProductos = () => {
+
+  const { user, isAuthenticated } = useAuth();
 
   const [nombreTemp, setNombreTemp] = useState("");
   const [categoriaTemp, setCategoriaTemp] = useState("");
@@ -39,7 +42,7 @@ const AdministrarProductos = () => {
     const confirmar = window.confirm(`¿Estás seguro de eliminar el producto "${p.nombre}"?`);
     if (!confirmar) return;
     try {
-      const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, { // ---------------------------------------------- API
+      const response = await fetch(`http://localhost:8080/api/productos/${p.id}?idUsuario=${user.id}`, { // ---------------------------------------------- API
         method: "DELETE"
       });
       if (response.ok) {
@@ -70,7 +73,7 @@ const AdministrarProductos = () => {
       
     };
     try {
-      const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, { // --------------------------------------------------- API
+      const response = await fetch(`http://localhost:8080/api/productos/${p.id}?idUsuario=${user.id}`, { // --------------------------------------------------- API
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(productoModificado)
@@ -107,7 +110,7 @@ const AdministrarProductos = () => {
     };
     console.log("Nuevo producto a añadir:", nuevoProducto);
     try {
-      const response = await fetch("http://localhost:8080/api/productos", { // ------------------------------------------------- API
+      const response = await fetch(`http://localhost:8080/api/productos?idUsuario=${user.id}`, { // ------------------------------------------------- API
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(nuevoProducto)

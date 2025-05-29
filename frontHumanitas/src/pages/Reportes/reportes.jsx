@@ -63,18 +63,6 @@ const Reportes = () => {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                    <div className="container justify-content-center align-content-center text-center m-5" >
-                        <p>Venta de productos semanales</p>
-                        <ResponsiveContainer width="100%" height={400}>
-                            <BarChart  width={400} height={300} data={ventasProductos}>
-                                <CartesianGrid stroke="#ccc" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar dataKey="ventas" fill="#99cc33" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
                 </div>
 
                 {/* Ganancias y Pedidos Cancelados, Realizados, Multas*/}

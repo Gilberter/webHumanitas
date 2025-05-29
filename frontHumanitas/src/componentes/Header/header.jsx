@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaRegUserCircle } from "react-icons/fa";
 import "./header.css"; 
 import { useAuth } from '../../context/AuthContext';
+import { Link } from "react-router-dom";
 
 function Header() {
   const { user, isAuthenticated, logout, login } = useAuth();
@@ -67,34 +68,54 @@ function Header() {
 
         {/* Collapse Items */}
         <div className="h-100 collapse navbar-collapse " id="navbarSupportedContent">
-          {isAuthenticated ? 
+          {isAuthenticated ? (
             <ul className="h-100 navbar-nav nav-right flex-md-row d-flex flex-row align-items-center text-center">
-              <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
-                <a className='nav-link active' href="">Reservas</a>
-              </li>
-              <li className='nav-item nav-item-bg  align-content-center nav-item-bg-hover'>
-                <a className='nav-link active' href="/historial">Historial</a>
-              </li>
+              {user?.rol === "ADMIN" ? (
+                <>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/admin/menu">Menú</Link>
+                  </li>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/admin/productos">Productos</Link>
+                  </li>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/admin/metricas">Métricas</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/reservas">Reservar</Link>
+                  </li>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/productos">Productos</Link>
+                  </li>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/historial">Historial</Link>
+                  </li>
+                </>
+              )}
             </ul>
-          : 
+          ) : (
             <p></p>
-          }
+          )}
+
           {isAuthenticated ? 
             <ul className="h-100 navbar-nav flex-md-row nav-left d-flex flex-row align-items-center justify-content-end ms-auto text-center">
               <li className="nav-item nav-item-bg-hover align-content-center">
                 <a href="/" className="nav-link active" onClick={(e) => {e.preventDefault(); logout();}}>Cerrar Sesion</a>
               </li>
               <li className='nav-item nav-item-bg-hover align-content-center'>
-                <a className="nav-link active" href="#" >Contacto</a>
+                <Link className="nav-link active" to="/contacto" >Contacto</Link>
               </li>
             </ul>
             :
             <ul className="h-100 navbar-nav flex-md-row nav-left d-flex flex-row align-items-center justify-content-end ms-auto text-center">
               <li className='nav-item nav-item-bg-hover align-content-center'>
-                <a href="/login" className="nav-link active">Registrarse</a>
+                <Link to="/login" className="nav-link active">Registrarse</Link>
               </li>
               <li className='nav-item nav-item-bg-hover align-content-center'>
-                <a className="nav-link active" href="/contacto">Contactanos</a>
+                <Link className="nav-link active" to="/contacto">Contactanos</Link>
               </li>
             </ul>
           } 
@@ -108,9 +129,9 @@ function Header() {
           <ul>
             {isAuthenticated ? 
               <>
-                <li><a href="/reservas">Reservas</a></li>
-                <li><a href="/pedidos">Pedidos</a></li>
-                <li><a href="/contacto">Contacto</a></li>
+                <li><Link to="/reservas">Reservas</Link></li>
+                <li><Link to="/pedidos">Pedidos</Link></li>
+                <li><Link to="/contacto">Contacto</Link></li>
                 <li>
                   <a href="/" onClick={(e) => { e.preventDefault(); logout(); }}>
                     Cerrar Sesión
@@ -119,8 +140,8 @@ function Header() {
               </>
             :
               <>
-                <li><a href="/login">Registrarse</a></li>
-                <li><a href="/contacto">Contactanos</a></li>
+                <li><Link to="/login">Registrarse</Link></li>
+                <li><Link to="/contacto">Contactanos</Link></li>
               </>
             }
             

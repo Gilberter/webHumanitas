@@ -29,9 +29,9 @@ function App() {
             <Route path="/contacto" element={<Contacto />} />
             <Route path="/productos" element={<Productos />} />
 
-            <Route path="/administracion" element={<Administracion />} />
-            <Route path="/administracion/administrarProductos" element={<AdministrarProductos />} />
-            <Route path="/administracion/reportes" element={<Reportes />} />
+            <Route path="/admin/menu" element={<Administracion />} />
+            <Route path="/admin/productos" element={<AdministrarProductos />} />
+            <Route path="/admin/metricas" element={<Reportes />} />
           </Routes>
         </Router>
       </AuthProvider>
