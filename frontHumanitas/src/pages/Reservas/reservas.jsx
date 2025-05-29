@@ -43,18 +43,62 @@ const Reservas = () => {
   };
 
 
-  // Cancelar reserva (puedes adaptar el endpoint según tu backend)
-  const cancelarReserva = async () => {
-    // Aquí deberías buscar el id de la reserva y hacer un DELETE o PUT según tu backend
-    alert(`¡Reserva Cancelada con éxito para el día ${diaSeleccionado}! (Implementa el endpoint en el backend)`);
-  };
-
   // Buscar el id del menú semanal por día
   const getMenuByDia = (dia) => {
     const item = menu.find((m) => m.dia === dia);
     console.log(item);
     return item && item ? item : null;
   };
+
+
+  // Cancelar reserva (puedes adaptar el endpoint según tu backend)
+  const cancelarReserva = async () => {
+    if (!isAuthenticated || !user) {
+      alert("Debes iniciar sesión para cancelar una reserva.");
+      return;
+    }
+
+    const menu = getMenuByDia(diaSeleccionado);
+
+    try {
+      // Paso 1: Buscar la reserva por usuario y menú (idealmente desde backend, aquí simulado)
+      const buscarUrl = `http://localhost:8080/api/reservas/usuario/${user.id}/menu/${menu.id}`;
+      const buscarResp = await fetch(buscarUrl);
+
+      if (!buscarResp.ok) {
+        alert("No se encontró una reserva existente para cancelar.");
+        return;
+      }
+
+      const reservaExistente = await buscarResp.json();
+
+      // Paso 2: Modificar el estado y enviar PUT a /api/reservas/{id}
+      const reservaCancelada = {
+        ...reservaExistente,
+        estado: "CANCELADO"
+      };
+
+      const response = await fetch(`http://localhost:8080/api/reservas/${reservaExistente.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reservaCancelada),
+      });
+
+      if (response.ok) {
+        alert(`¡Reserva cancelada con éxito para el día ${diaSeleccionado}!`);
+      } else {
+        const errorMsg = await response.text();
+        alert("No se pudo cancelar la reserva: " + errorMsg);
+      }
+
+    } catch (error) {
+      console.error("Error al cancelar la reserva:", error);
+      alert("Error al conectar con el servidor.");
+    }
+  };
+
 
   // Hacer reserva (POST al backend)
   const confirmarReserva = async () => {

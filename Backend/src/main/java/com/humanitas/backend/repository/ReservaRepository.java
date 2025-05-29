@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -44,6 +45,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     //List<Reserva> findByUsuarioIdAndProductoReservadoIdAndFechaReserva(Long usuarioId, Long productoReservadoId, LocalDate fechaReserva);
 
     List<Reserva> findByMenuSemanalId(Integer menuSemanalId);
+
+    Optional<Reserva> findByUsuarioIdAndMenuSemanalId(Long usuarioId, Long menuSemanalId);
 
     @Query("SELECT COUNT(r), COALESCE(SUM(m.precio),0) FROM Reserva r JOIN r.menuSemanal m WHERE r.usuario.id = :usuarioId AND r.estado = 'CONFIRMADO'")
     Object[] obtenerResumenReservasPorUsuario(@Param("usuarioId") Long usuarioId);

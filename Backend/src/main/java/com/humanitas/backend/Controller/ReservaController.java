@@ -2,6 +2,7 @@ package com.humanitas.backend.Controller;
 
 import com.humanitas.backend.entity.EstadoReserva; // Importar si se usa como PathVariable o RequestParam
 import com.humanitas.backend.entity.Reserva;
+import com.humanitas.backend.repository.ReservaRepository;
 import com.humanitas.backend.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat; // Para parsear LocalDate
@@ -20,6 +21,10 @@ public class ReservaController {
 
     @Autowired
     private ReservaService reservaService;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
 
     @PostMapping
     public ResponseEntity<?> crearReserva(@RequestBody Reserva reserva) {
@@ -90,6 +95,13 @@ public class ReservaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // Si la reserva no se encuentra
         }
+    }
+
+    @GetMapping("/usuario/{usuarioId}/menu/{menuId}")
+    public ResponseEntity<?> obtenerReservaPorUsuarioYMenu(@PathVariable Long usuarioId, @PathVariable Long menuId) {
+        Optional<Reserva> reserva = reservaRepository.findByUsuarioIdAndMenuSemanalId(usuarioId, menuId);
+        return reserva.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     // Eliminar una reserva (generalmente no recomendado, se prefiere cancelar)
