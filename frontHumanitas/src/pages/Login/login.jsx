@@ -57,6 +57,15 @@ const Login = () => {
         const data = await response.json();
         console.log("Usuario creado:", data);
         alert("Usuario creado con éxito");
+
+        // Intentar iniciar sesión directamente con los datos del usuario
+        const success = await login(usuario.correo, usuario.contrasena);
+        if (success) {
+          navigate("/home");
+        } else {
+          alert("El usuario fue creado, pero no se pudo iniciar sesión automáticamente.");
+        }
+
       } else {
         console.error("Error al crear el usuario");
         alert("Error al crear el usuario");
@@ -168,7 +177,7 @@ const Login = () => {
               <div className="mb-3">
                 <label className="form-label">Codigo Estudiante</label>
                 <input
-                  type="codigo"
+                  type="number"
                   className="form-control"
                   id="codigoEstudiante"
                   placeholder="2222222"

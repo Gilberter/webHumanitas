@@ -36,7 +36,7 @@ const Home = () => {
               <p>Ver<br/>  Productos</p>
             </section>
           </Link>
-          <Link to="/productos?categoria=bebidas" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
+          <Link to="/productos?categoria=BEBIDA" className="bg-image-2 option d-flex justify-content-center align-items-center flex-grow-1 text-decoration-none">
             <section>
               <p>Ver <br/> Bebidas</p>
             </section>
