@@ -62,7 +62,7 @@ const Administracion = () => {
             console.error("Error de conexión:", error);
             alert("No se pudo conectar con el servidor.");
           }
-        };       
+        };
         
 
         // Hora límite
