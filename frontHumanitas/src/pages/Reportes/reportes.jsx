@@ -10,38 +10,32 @@ import "./reportes.css";
 
 const Reportes = () => {
     const [ventasAlmuerzos, setVentasAlmuezos] = useState([]);
-    useEffect( () => {
-        fetch("/ventas.json")
-        .then((res) => res.json())
-        .then((data) => setVentasAlmuezos(data.VentaAlmuerzoSemanal))
-        .catch((err) => console.error("Error al cargar el menú:", err));
-
-    
-    }
-    , [])
-
     const [pedidos, setPedidos] = useState([])
-    useEffect( () => {
-        fetch("/ventas.json")
+    const [gananciasPorDia, setGananciasPorDia] = useState([]);
+
+
+    useEffect(() => {
+    fetch("http://localhost:8080/api/reservas/metricas/ventas-almuerzos-semanal")
         .then((res) => res.json())
-        .then((data) => setPedidos(data.PedidosSemanales))
-        .catch((err) => console.error("Error al cargar el menú:", err));
+        .then((data) => setVentasAlmuezos(data))
+        .catch((err) => console.error("Error al cargar ventas de almuerzos:", err));
+    }, []);
 
-    
-    }
-    , [])
+    useEffect(() => {
+        fetch("http://localhost:8080/api/reservas/metricas/pedidos-semanales")
+            .then((res) => res.json())
+            .then((data) => setPedidos(data))
+            .catch((err) => console.error("Error al cargar pedidos:", err));
+    }, []);
 
-    const [ventasProductos, setVentasProductos] = useState([]);
-    useEffect( () => {
-        fetch("/ventas.json")
+    useEffect(() => {
+    fetch("http://localhost:8080/api/reservas/metricas/ganancias-por-dia")
         .then((res) => res.json())
-        .then((data) => setVentasProductos(data.VentaProductoSemanal))
-        .catch((err) => console.error("Error al cargar el menú:", err));
+        .then((data) => setGananciasPorDia(data))
+        .catch((err) => console.error("Error al cargar ganancias por dia:", err));
+    }, []);
 
-    
-    }
-    , [])
-
+    // Colores para el gráfico de pastel
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 
@@ -65,7 +59,22 @@ const Reportes = () => {
                     </div>
                 </div>
 
-                {/* Ganancias y Pedidos Cancelados, Realizados, Multas*/}
+                <div className="container-fluid d-flex">
+                    <div className="container justify-content-center align-content-center text-center m-5">
+                        <h4>Ganancias por Día</h4>
+                        <ResponsiveContainer width="100%" height={400}>
+                        <BarChart width={400} height={300} data={gananciasPorDia}>
+                            <CartesianGrid stroke="#ccc" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip formatter={v => `$${v.toLocaleString()}`} />
+                            <Bar dataKey="ganancias" fill="#3399ff" />
+                        </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Pedidos Cancelados, Realizados, Multas*/}
 
                 <div className="container-fluid">
                     <div className="container m-5">

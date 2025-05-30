@@ -51,4 +51,19 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query("SELECT COUNT(r), COALESCE(SUM(m.precio),0) FROM Reserva r JOIN r.menuSemanal m WHERE r.usuario.id = :usuarioId AND r.estado = 'CONFIRMADO'")
     Object[] obtenerResumenReservasPorUsuario(@Param("usuarioId") Long usuarioId);
 
+    @Query("SELECT m.dia, COUNT(r) FROM Reserva r JOIN r.menuSemanal m WHERE r.estado = 'CONFIRMADO' GROUP BY m.dia")
+    List<Object[]> countVentasAlmuerzosPorDia();
+
+    
+    @Query("SELECT r.estado, COUNT(r) FROM Reserva r GROUP BY r.estado")
+    List<Object[]> countPedidosPorEstado();
+
+
+    // ReservaRepository.java
+    @Query("SELECT SUM(m.precio) FROM Reserva r JOIN r.menuSemanal m WHERE r.estado = 'CONFIRMADO'")
+    Double totalGanancias();
+
+    @Query("SELECT m.dia, SUM(m.precio) FROM Reserva r JOIN r.menuSemanal m WHERE r.estado = 'CONFIRMADO' GROUP BY m.dia")
+    List<Object[]> gananciasPorDia();
+
 }

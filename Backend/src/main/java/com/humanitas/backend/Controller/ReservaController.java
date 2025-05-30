@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate; // Importar LocalDate
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservas")
@@ -45,6 +46,17 @@ public class ReservaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/metricas/ventas-almuerzos-semanal")
+    public ResponseEntity<List<Map<String, Object>>> getVentasAlmuerzosSemanales() {
+        List<Map<String, Object>> data = reservaService.obtenerVentasAlmuerzosSemanales();
+        return ResponseEntity.ok(data);
+    }
+    @GetMapping("/metricas/pedidos-semanales")
+    public ResponseEntity<List<Map<String, Object>>> getPedidosSemanales() {
+        List<Map<String, Object>> data = reservaService.obtenerPedidosSemanales();
+        return ResponseEntity.ok(data);
+    }
+
     @GetMapping
     public List<Reserva> obtenerTodasLasReservas() {
         return reservaService.obtenerTodasLasReservas();
@@ -63,6 +75,15 @@ public class ReservaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/metricas/ganancias-totales")
+    public ResponseEntity<Double> getGananciasTotales() {
+        return ResponseEntity.ok(reservaService.obtenerTotalGanancias());
+    }
+    @GetMapping("/metricas/ganancias-por-dia")
+    public ResponseEntity<List<Map<String, Object>>> getGananciasPorDia() {
+        return ResponseEntity.ok(reservaService.obtenerGananciasPorDia());
     }
 
     @GetMapping("/fecha")

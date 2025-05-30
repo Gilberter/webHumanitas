@@ -15,8 +15,11 @@ import com.humanitas.backend.repository.MenuSemanalRepository;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class ReservaService {
@@ -99,6 +102,45 @@ public class ReservaService {
         reservaRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Reserva no encontrada para eliminar con ID: " + id));
         reservaRepository.deleteById(id);
+    }
+
+    public List<Map<String, Object>> obtenerVentasAlmuerzosSemanales() {
+    // Suponiendo que reservas CONFIRMADO y menuSemanal.dia es el nombre del día
+        List<Object[]> results = reservaRepository.countVentasAlmuerzosPorDia();
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (Object[] row : results) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", row[0]); // Día
+            map.put("ventas", row[1]); // Cantidad
+            data.add(map);
+        }
+        return data;
+    }
+    public List<Map<String, Object>> obtenerPedidosSemanales() {
+        List<Object[]> results = reservaRepository.countPedidosPorEstado();
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (Object[] row : results) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", row[0]); // Estado
+            map.put("value", row[1]); // Cantidad
+            data.add(map);
+        }
+        return data;
+    }
+
+    public Double obtenerTotalGanancias() {
+    return reservaRepository.totalGanancias();
+    }
+    public List<Map<String, Object>> obtenerGananciasPorDia() {
+        List<Object[]> results = reservaRepository.gananciasPorDia();
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (Object[] row : results) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", row[0]);
+            map.put("ganancias", row[1]);
+            data.add(map);
+        }
+        return data;
     }
 
     
