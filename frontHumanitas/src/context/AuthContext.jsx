@@ -53,6 +53,10 @@ export const AuthProvider = ({children = null}) => {
     const logout = () => {
         setUser(null);
         setIsAuthenticated(false);
+        localStorage.removeItem("user");
+        localStorage.setItem("isAuthenticated", "false");
+        //Redireccionar a la página de inicio
+        window.location.href = "/home";
     };
 
     return (

@@ -12,6 +12,7 @@ const Administracion = () => {
   const [descripcionPlato, setDescripcionPlato] = useState("");
   const [imagenPlato, setImagenPlato] = useState("");
   const [disponibilidad, setDisponibilidad] = useState("");
+  const [precio, setPrecio] = useState("");
   const [horaLimiteCancelacion, setHoraLimiteCancelacion] = useState("02:25");
 
     // Cargar reservas desde API json
@@ -25,18 +26,19 @@ const Administracion = () => {
 
       const [diaSeleccionado, setDiaSeleccionado] = useState(null);
       const [showModalModificarDia, setShowModalModificarDia] = useState(false); 
-        // Abre el modal y actualiza el día
-        const abrirModal = (dia) => {
-          setNombrePlato(dia.nombrePlato);
-          setDescripcionPlato(dia.descripcionPlato);
-          setImagenPlato(dia.imagenPlato);
-          setDisponibilidad(dia.disponibilidadPlato);
-          setDiaSeleccionado(dia);
-          setShowModalModificarDia(true);
-          if (dia.horaLimiteCancelacion) {
-            setHoraLimiteCancelacion(dia.horaLimiteCancelacion);
-          }
-        };
+      // Abre el modal y actualiza el día
+      const abrirModal = (dia) => {
+        setNombrePlato(dia.nombrePlato);
+        setDescripcionPlato(dia.descripcionPlato);
+        setImagenPlato(dia.imagenPlato);
+        setDisponibilidad(dia.disponibilidadPlato);
+        setDiaSeleccionado(dia);
+        setShowModalModificarDia(true);
+        setPrecio(dia.precio);
+        if (dia.horaLimiteCancelacion) {
+          setHoraLimiteCancelacion(dia.horaLimiteCancelacion);
+        }
+      };
 
         // modificar día
         const modificarDia = async () => {
@@ -51,6 +53,7 @@ const Administracion = () => {
             descripcionPlato: descripcionPlato,
             imagenPlato: imagenPlato,
             disponibilidadPlato: disponibilidad,
+            precio: precio,
             horaLimiteCancelacion: horaLimiteCancelacion
           };
           try {
@@ -172,7 +175,8 @@ const Administracion = () => {
                   <h4 className="card-title">{item.dia}</h4>
                   <h5 className="card-title">{item.nombrePlato}</h5>
                   <p className="card-text">{item.descripcionPlato}</p>
-                   <p className="card-text">Disponibilidad: {item.disponibilidadPlato}</p>
+                  <p className="card-text"><strong>Precio:</strong> ${item.precio}</p>
+                  <p className="card-text">Disponibilidad: {item.disponibilidadPlato}</p>
                   <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item)}>Modificar</button>
                 </div>
               </div>
@@ -205,6 +209,9 @@ const Administracion = () => {
 
                 <label className="form-label pt-4">Disponibilidad</label>
                 <input type="number" className="form-control" value={disponibilidad} onChange={(e) => setDisponibilidad(e.target.value)} required/>
+                
+                <label className="form-label pt-4">Precio</label>
+                <input type="number" className="form-control" value={precio} onChange={(e) => setPrecio(e.target.value)} required/>
 
                 </div>
                 <div className="modal-footer">

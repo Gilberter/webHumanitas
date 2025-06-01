@@ -49,7 +49,7 @@ function Header() {
             <ul className="navbar-nav flex-md-row d-flex align-items-center nav-right h-100 align-items-center text-center">
               <li className='nav-item align-content-center nav-item-bg-hover d-flex text-center align-items-center'>
                 <FaRegUserCircle size={20} />
-                <a href="#" className="nav-link active ps-2" >
+                <a href="/usuario" className="nav-link active ps-2" >
                   {user && user.nombre}
                 </a>
               </li>
@@ -80,6 +80,9 @@ function Header() {
                   </li>
                   <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
                     <Link className='nav-link active' to="/admin/metricas">Métricas</Link>
+                  </li>
+                  <li className='nav-item nav-item-bg align-content-center nav-item-bg-hover'>
+                    <Link className='nav-link active' to="/admin/usuarios">Usuarios</Link>
                   </li>
                 </>
               ) : (
@@ -133,7 +136,7 @@ function Header() {
                 <li><Link to="/pedidos">Pedidos</Link></li>
                 <li><Link to="/contacto">Contacto</Link></li>
                 <li>
-                  <a href="/" onClick={(e) => { e.preventDefault(); logout(); }}>
+                  <a href="/home" onClick={(e) => { e.preventDefault(); logout(); }}>
                     Cerrar Sesión
                   </a>
                 </li>

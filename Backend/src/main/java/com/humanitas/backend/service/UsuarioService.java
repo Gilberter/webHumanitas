@@ -51,8 +51,6 @@ public class UsuarioService {
             usuarioExistente.setApellidos(usuarioActualizado.getApellidos());
             usuarioExistente.setCodigoEstudiante(usuarioActualizado.getCodigoEstudiante());
             usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
-            usuarioExistente.setRol(usuarioActualizado.getRol());
-
 
             if (usuarioActualizado.getContrasena() != null && !usuarioActualizado.getContrasena().isEmpty()) {
 

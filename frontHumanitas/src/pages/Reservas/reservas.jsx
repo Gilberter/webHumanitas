@@ -155,6 +155,7 @@ const Reservas = () => {
                   <h1 className="card-title">{item.dia}</h1>
                   <h4 className="card-title">{item.nombrePlato}</h4>
                   <p className="card-text">{item.descripcionPlato}</p>
+                  <p className="card-text"><strong>Precio:</strong> ${item.precio}</p>
                   <button className="btn btn-primary w-100 mb-2" onClick={() => abrirModal(item.dia, "Reservar")} disabled={!isAuthenticated}>Reservar</button>
                   <button className="btn btn-danger w-100" onClick={() => abrirModal(item.dia, "Cancelar")} disabled={!isAuthenticated}>Cancelar reserva</button>
                 </div>

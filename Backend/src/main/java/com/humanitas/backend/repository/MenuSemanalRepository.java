@@ -2,7 +2,6 @@ package com.humanitas.backend.repository;
 
 import com.humanitas.backend.entity.DiaSemana;
 import com.humanitas.backend.entity.MenuSemanal;
-import com.humanitas.backend.entity.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

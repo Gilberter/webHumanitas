@@ -12,6 +12,8 @@ import Historial from "./pages/Historial/historial.jsx";
 import Contacto from "./pages/Contacto/contacto.jsx";
 import Productos from "./pages/Productos/productos.jsx";
 import AdministrarProductos from "./pages/Administracion/Productos/administrarProductos.jsx";
+import Usuario from './pages/Usuario/usuario.jsx';
+import UsuarioAdmin from './pages/Administracion/UsuarioAdmin/usuarioAdmin.jsx';
 
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -28,10 +30,11 @@ function App() {
             <Route path="/historial" element={<Historial />} />
             <Route path="/contacto" element={<Contacto />} />
             <Route path="/productos" element={<Productos />} />
-
+            <Route path="/usuario" element={<Usuario/>}></Route>
             <Route path="/admin/menu" element={<Administracion />} />
             <Route path="/admin/productos" element={<AdministrarProductos />} />
             <Route path="/admin/metricas" element={<Reportes />} />
+            <Route path="/admin/usuarios" element={<UsuarioAdmin />} />
           </Routes>
         </Router>
       </AuthProvider>
